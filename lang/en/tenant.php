@@ -1,0 +1,42 @@
+<?php
+
+return [
+    'tenant' => 'Tenant',
+    'tenants' => 'Tenants',
+    'module_title' => 'Manage all Tenants',
+    'module_description' => 'Tenants are the clients signed up for your service.',
+    'could_not_perform_if_status_not_pending' => 'Could not perform this operation as tenant status is not pending.',
+    'could_not_modify_pending_tenant' => 'Could not modify tenant if not activated.',
+    'props' => [
+        'domain' => 'Domain',
+        'custom_domain' => 'Custom Domain',
+        'name' => 'Name',
+        'email' => 'Email',
+        'contact_number' => 'Contact Number',
+        'activation_token' => 'Activation Token',
+        'status' => 'Status',
+        'expiry_date' => 'Expiry Date',
+        'trial' => 'Trial',
+    ],
+    'config' => [
+        'props' => [
+            'trial_period' => 'Trial Period',
+            'trial_ends_on_subscription' => 'Trial Ends on Subscription',
+            'subscription_end_alert' => 'Subscription End Alert',
+            'unavailable_subdomain' => 'Unavailable Subdomain',
+            'default_timezone' => 'Default Timezone',
+            'default_locale' => 'Default Locale',
+            'default_currency' => 'Default Currency',
+            'default_app_name' => 'Default App Name',
+            'default_author' => 'Default Author',
+            'default_footer_credit' => 'Default Footer Credit',
+        ],
+    ],
+    'statuses' => [
+        'pending' => 'Pending',
+        'running' => 'Running',
+        'expired' => 'Expired',
+        'suspended' => 'Suspended',
+        'terminated' => 'Terminated',
+    ],
+];

@@ -1,0 +1,678 @@
+{
+    "system": [
+        {
+            "name": "show_setup_wizard",
+            "value": false
+        },
+        {
+            "name": "direction",
+            "value": "ltr",
+            "is_public": true
+        },
+        {
+            "name": "locale",
+            "value": "en",
+            "is_public": true
+        },
+        {
+            "name": "timezone",
+            "value": "Asia/Kolkata",
+            "is_public": true
+        },
+        {
+            "name": "theme",
+            "value": "default",
+            "is_public": true
+        },
+        {
+            "name": "date_format",
+            "value": "MMMM D, YYYY",
+            "is_public": true
+        },
+        {
+            "name": "time_format",
+            "value": "h:mm A",
+            "is_public": true
+        },
+        {
+            "name": "per_page",
+            "value": 10,
+            "is_public": true
+        },
+        {
+            "name": "currency",
+            "value": "USD",
+            "is_public": true
+        },
+        {
+            "name": "currencies",
+            "value": "USD",
+            "is_public": true
+        },
+        {
+            "name": "footer_credit",
+            "value": "Designed with ❤️ by ScriptMint",
+            "is_public": true
+        },
+        {
+            "name": "show_version_number",
+            "value": true,
+            "is_public": true
+        },
+        {
+            "name": "enable_dark_theme",
+            "value": false,
+            "is_public": true
+        },
+        {
+            "name": "enable_mini_sidebar",
+            "value": true
+        },
+        {
+            "name": "enable_maintenance_mode",
+            "value": false
+        },
+        {
+            "name": "enable_setup_wizard",
+            "value": false
+        },
+        {
+            "name": "enable_print_preview",
+            "value": true,
+            "is_public": true
+        },
+        {
+            "name": "enable_strong_password",
+            "value": true,
+            "is_public": true
+        }
+    ],
+    "feature": [
+        {
+            "name": "enable_todo",
+            "value": true
+        },
+        {
+            "name": "enable_backup",
+            "value": true
+        },
+        {
+            "name": "enable_activity_log",
+            "value": true
+        }
+    ],
+    "notification": [
+        {
+            "name": "enable_mail_notification",
+            "value": true,
+            "is_public": true
+        },
+        {
+            "name": "enable_mobile_push_notification",
+            "value": false,
+            "is_public": false
+        },
+        {
+            "name": "enable_guest_notification_bar",
+            "value": false,
+            "is_public": true
+        },
+        {
+            "name": "enable_app_notification_bar",
+            "value": false
+        },
+        {
+            "name": "guest_notification_message",
+            "value": "",
+            "is_public": true
+        },
+        {
+            "name": "app_notification_message",
+            "value": ""
+        },
+        {
+            "name": "enable_pusher_notification",
+            "value": false,
+            "is_public": true
+        },
+        {
+            "name": "pusher_app_id",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "pusher_app_key",
+            "value": "",
+            "is_public": true
+        },
+        {
+            "name": "pusher_app_secret",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "pusher_app_cluster",
+            "value": "",
+            "is_public": true
+        }
+    ],
+    "general": [
+        {
+            "name": "app_name",
+            "value": "ScriptMint",
+            "is_public": true
+        },
+        {
+            "name": "meta_author",
+            "value": "ScriptMint",
+            "is_public": true
+        },
+        {
+            "name": "meta_description",
+            "value": "Application by ScriptMint",
+            "is_public": true
+        },
+        {
+            "name": "meta_keywords",
+            "value": "scriptmint",
+            "is_public": true
+        }
+    ],
+    "auth": [
+        {
+            "name": "session_lifetime",
+            "value": 1440
+        },
+        {
+            "name": "login_throttle_max_attempts",
+            "value": 5
+        },
+        {
+            "name": "login_throttle_lock_timeout",
+            "value": 2
+        },
+        {
+            "name": "enable_reset_password",
+            "value": true,
+            "is_public": true
+        },
+        {
+            "name": "reset_password_token_lifetime",
+            "value": 30
+        },
+        {
+            "name": "enable_registration",
+            "value": true,
+            "is_public": true
+        },
+        {
+            "name": "enable_registration_terms",
+            "value": false,
+            "is_public": true
+        },
+        {
+            "name": "enable_email_verification",
+            "value": true,
+            "is_public": true
+        },
+        {
+            "name": "enable_account_approval",
+            "value": true
+        },
+        {
+            "name": "enable_two_factor_security",
+            "value": false
+        },
+        {
+            "name": "enable_oauth_login",
+            "value": false,
+            "is_public": true
+        },
+        {
+            "name": "google_client_id",
+            "is_secret": true
+        },
+        {
+            "name": "google_client_secret",
+            "is_secret": true
+        },
+        {
+            "name": "facebook_client_id",
+            "is_secret": true
+        },
+        {
+            "name": "facebook_client_secret",
+            "is_secret": true
+        },
+        {
+            "name": "twitter_client_id",
+            "is_secret": true
+        },
+        {
+            "name": "twitter_client_secret",
+            "is_secret": true
+        },
+        {
+            "name": "github_client_id",
+            "is_secret": true
+        },
+        {
+            "name": "github_client_secret",
+            "is_secret": true
+        },
+        {
+            "name": "microsoft_client_id",
+            "is_secret": true
+        },
+        {
+            "name": "microsoft_client_secret",
+            "is_secret": true
+        },
+        {
+            "name": "enable_otp_login",
+            "value": true,
+            "is_public": true
+        },
+        {
+            "name": "otp_login_lifetime",
+            "value": 10
+        },
+        {
+            "name": "enable_email_otp_login",
+            "value": true,
+            "is_public": true
+        },
+        {
+            "name": "enable_sms_otp_login",
+            "value": true,
+            "is_public": true
+        },
+        {
+            "name": "enable_screen_lock",
+            "value": false
+        },
+        {
+            "name": "screen_lock_timeout",
+            "value": 10
+        }
+    ],
+    "assets": [
+        {
+            "name": "favicon",
+            "value": "/images/favicon.png",
+            "is_public": true
+        },
+        {
+            "name": "logo",
+            "value": "/images/logo.png",
+            "is_public": true
+        },
+        {
+            "name": "logo_light",
+            "value": "/images/logo-light.png",
+            "is_public": true
+        },
+        {
+            "name": "icon",
+            "value": "/images/icon.png",
+            "is_public": true
+        },
+        {
+            "name": "icon_light",
+            "value": "/images/icon-light.png",
+            "is_public": true
+        },
+        {
+            "name": "guest_background",
+            "value": "/images/guest-background.webp",
+            "is_public": true
+        }
+    ],
+    "mail": [
+        {
+            "name": "driver",
+            "value": "log"
+        },
+        {
+            "name": "from_name",
+            "value": "ScriptMint"
+        },
+        {
+            "name": "from_address",
+            "value": "hello@scriptmint.com"
+        },
+        {
+            "name": "smtp_username",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "smtp_password",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "mailgun_domain",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "mailgun_secret",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "mailgun_endpoint",
+            "value": "",
+            "is_secret": false
+        }
+    ],
+    "sms": [
+        {
+            "name": "driver",
+            "value": null,
+            "is_secret": false
+        },
+        {
+            "name": "max_sms_per_queue",
+            "value": 100,
+            "is_secret": false
+        },
+        {
+            "name": "sender_id",
+            "value": null,
+            "is_secret": false
+        },
+        {
+            "name": "test_number",
+            "value": null,
+            "is_secret": false
+        },
+        {
+            "name": "api_key",
+            "value": null,
+            "is_secret": true
+        },
+        {
+            "name": "api_secret",
+            "value": null,
+            "is_secret": true
+        },
+        {
+            "name": "api_url",
+            "value": null,
+            "is_secret": false
+        },
+        {
+            "name": "api_method",
+            "value": "GET",
+            "is_secret": false
+        },
+        {
+            "name": "number_prefix",
+            "value": null,
+            "is_secret": false
+        },
+        {
+            "name": "sender_id_param",
+            "value": null,
+            "is_secret": false
+        },
+        {
+            "name": "receiver_param",
+            "value": null,
+            "is_secret": false
+        },
+        {
+            "name": "message_param",
+            "value": null,
+            "is_secret": false
+        },
+        {
+            "name": "template_id_param",
+            "value": null,
+            "is_secret": false
+        },
+        {
+            "name": "api_headers",
+            "value": null,
+            "is_secret": true
+        },
+        {
+            "name": "additional_params",
+            "value": null,
+            "is_secret": true
+        }
+    ],
+    "social_network": [],
+    "utility": [
+        {
+            "name": "todo_view",
+            "value": "board"
+        }
+    ],
+    "chat": [
+        {
+            "name": "enable_chat",
+            "value": true
+        }
+    ],
+    "site": [
+        {
+            "name": "enable_site",
+            "value": true
+        },
+        {
+            "name": "theme",
+            "value": "default",
+            "is_public": true
+        }
+    ],
+    "tenant": [
+        {
+            "name": "trial_period",
+            "value": 7
+        },
+        {
+            "name": "enable_trial_ends_on_subscription",
+            "value": true
+        },
+        {
+            "name": "subscription_end_alert",
+            "value": 7
+        },
+        {
+            "name": "unavailable_subdomain",
+            "value": "webmaster,admin,sample,test,testing"
+        },
+        {
+            "name": "default_timezone",
+            "value": "Asia/Kolkata"
+        },
+        {
+            "name": "default_locale",
+            "value": "en"
+        },
+        {
+            "name": "default_currency",
+            "value": "USD"
+        },
+        {
+            "name": "default_app_name",
+            "value": "ScriptMint"
+        },
+        {
+            "name": "default_author",
+            "value": "ScriptMint"
+        },
+        {
+            "name": "default_footer_credit",
+            "value": "Designed with ❤️ by ScriptMint"
+        }
+    ],
+    "subscription": [
+        {
+            "name": "invoice_number_prefix",
+            "value": "SM"
+        },
+        {
+            "name": "invoice_number_digit",
+            "value": 3
+        },
+        {
+            "name": "invoice_number_suffix",
+            "value": ""
+        },
+        {
+            "name": "invoice_terms",
+            "value": ""
+        },
+        {
+            "name": "tax_id_label",
+            "value": "GSTIN"
+        },
+        {
+            "name": "tax_id_number",
+            "value": ""
+        },
+        {
+            "name": "tax_id_name",
+            "value": ""
+        },
+        {
+            "name": "company_address",
+            "value": ""
+        },
+        {
+            "name": "company_email",
+            "value": ""
+        },
+        {
+            "name": "company_phone",
+            "value": ""
+        },
+        {
+            "name": "enable_paypal",
+            "value": false
+        },
+        {
+            "name": "enable_live_paypal_mode",
+            "value": false
+        },
+        {
+            "name": "paypal_client",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "paypal_secret",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "enable_stripe",
+            "value": false
+        },
+        {
+            "name": "enable_live_stripe_mode",
+            "value": false
+        },
+        {
+            "name": "stripe_client",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "stripe_secret",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "enable_payzone",
+            "value": false
+        },
+        {
+            "name": "enable_live_payzone_mode",
+            "value": false
+        },
+        {
+            "name": "payzone_merchant",
+            "value": ""
+        },
+        {
+            "name": "payzone_secret_key",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "payzone_notification_key",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "enable_razorpay",
+            "value": false
+        },
+        {
+            "name": "enable_live_razorpay_mode",
+            "value": false
+        },
+        {
+            "name": "razorpay_client",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "razorpay_secret",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "enable_paystack",
+            "value": false
+        },
+        {
+            "name": "enable_live_paystack_mode",
+            "value": false
+        },
+        {
+            "name": "paystack_client",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "paystack_secret",
+            "value": "",
+            "is_secret": true
+        }
+    ],
+    "server": [
+        {
+            "name": "platform",
+            "value": "local"
+        },
+        {
+            "name": "cpanel_hostname",
+            "value": ""
+        },
+        {
+            "name": "cpanel_port",
+            "value": 2083
+        },
+        {
+            "name": "cpanel_username",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "cpanel_api_token",
+            "value": "",
+            "is_secret": true
+        },
+        {
+            "name": "db_prefix",
+            "value": ""
+        }
+    ],
+    "module": []
+}

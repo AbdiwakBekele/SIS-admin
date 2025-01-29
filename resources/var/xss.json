@@ -1,0 +1,6 @@
+{
+    "api/v1/app/config": [],
+    "api/v1/app/config/mail-templates/*": ["content"],
+    "api/v1/app/utility/todos/*": ["description"],
+    "api/v1/app/utility/todos": ["description"]
+}

@@ -1,0 +1,42 @@
+import * as Api from "@core/apis"
+import * as Form from "@core/utils/form"
+import { useToast } from "vue-toastification"
+import { mutations, actions, getters } from "@stores/global"
+
+const toast = useToast()
+
+const initialState = () => ({
+    initURL: "/app/config/mail-templates",
+    templateUrl: "/app/config/templates",
+    formErrors: {},
+})
+
+const mailTemplate = {
+    namespaced: true,
+    state: initialState,
+    modules: {},
+    mutations: {
+        ...mutations,
+    },
+    actions: {
+        ...actions,
+        async toggleStatus({ state, commit }, payload) {
+            await Api.custom({
+                url: state.templateUrl + "/" + payload.uuid + "/status",
+                method: "POST",
+            })
+                .then((response) => {
+                    toast.success(response.message)
+                })
+                .catch((error) => {
+                    commit("SET_FORM_ERRORS", Form.getErrors(error))
+                    throw error
+                })
+        },
+    },
+    getters: {
+        ...getters,
+    },
+}
+
+export default mailTemplate

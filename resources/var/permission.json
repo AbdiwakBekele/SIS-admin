@@ -1,0 +1,74 @@
+{
+    "roles": ["admin", "user"],
+    "permissions": {
+        "general": {
+            "login:action": ["user"],
+            "chat:access": ["user"],
+            "access:reports": []
+        },
+        "config": {
+            "config:store": [],
+            "locale:read": [],
+            "locale:create": [],
+            "locale:edit": [],
+            "locale:delete": [],
+            "backup:manage": [],
+            "activity-log:manage": [],
+            "activity-log:export": []
+        },
+        "custom_field": {
+            "custom-field:manage": ["manager"]
+        },
+        "utility": {
+            "utility:config": [],
+            "todo:manage": ["user"],
+            "todo:export": []
+        },
+        "user": {
+            "user:read": [],
+            "user:create": [],
+            "user:edit": [],
+            "user:delete": [],
+            "user:impersonate": [],
+            "user:export": []
+        },
+        "modules": {},
+        "plan": {
+            "plan:read": [],
+            "plan:create": [],
+            "plan:edit": [],
+            "plan:delete": [],
+            "plan:export": []
+        },
+        "tenant": {
+            "tenant:config": [],
+            "tenant:login": [],
+            "tenant:read": [],
+            "tenant:create": [],
+            "tenant:edit": [],
+            "tenant:delete": [],
+            "tenant:export": []
+        },
+        "subscription": {
+            "subscription:config": [],
+            "subscription:read": [],
+            "subscription:create": [],
+            "subscription:edit": [],
+            "subscription:delete": [],
+            "subscription:export": []
+        },
+        "subscriber": {
+            "subscriber:read": [],
+            "subscriber:create": [],
+            "subscriber:edit": [],
+            "subscriber:delete": [],
+            "subscriber:export": []
+        },
+        "query": {
+            "query:read": [],
+            "query:action": [],
+            "query:delete": [],
+            "query:export": []
+        }
+    }
+}
