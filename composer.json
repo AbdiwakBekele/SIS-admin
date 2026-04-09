@@ -16,7 +16,6 @@
         "laravel/folio": "^1.1",
         "laravel/framework": "^11.0",
         "laravel/helpers": "^1.6",
-        "laravel/horizon": "^5.15.0",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.6.1",
         "laravel/tinker": "^2.8.1",
