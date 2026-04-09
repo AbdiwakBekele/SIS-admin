@@ -32,9 +32,26 @@ export default {
 </script>
 
 <script setup>
-import { provide } from "vue"
+import { computed, provide } from "vue"
 
-provide("Header", [])
-provide("SubHeader", [])
-provide("VerticalAlign", [])
+const props = defineProps({
+    /**
+     * Column definitions for DataCell inject (key, label, visibility).
+     * When empty, DataCell falls back to default visibility.
+     */
+    headers: {
+        type: Array,
+        default: () => [],
+    },
+})
+
+provide(
+    "Header",
+    computed(() => props.headers)
+)
+provide("SubHeader", computed(() => []))
+provide(
+    "VerticalAlign",
+    computed(() => "top")
+)
 </script>

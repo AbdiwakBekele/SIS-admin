@@ -3,13 +3,13 @@
         <td
             :valign="valign"
             :colspan="colspan"
-            class="dark:bg-dark-header"
             :class="{
                 'sticky-column bg-white dark:bg-dark-body': stickyColumn,
-                'bg-gray-100 dark:bg-gray-800': disabled,
+                'bg-blue-100 dark:bg-gray-800': disabled,
                 'py-2 sm:px-2 xl:px-4': !noPadding && !leftPadding,
                 'py-3': isFooter,
-                'border border-gray-200 dark:border-gray-700':
+                'border-r border-blue-300 dark:border-blue-300': !bordered && !isFooter,
+                'border border-blue-300 dark:border-blue-300':
                     bordered || isFooter,
                 'hidden md:table-cell': !noResponsive,
                 'text-right': align == 'right',
@@ -45,7 +45,7 @@
                 'items-center': valign == 'middle',
                 'items-start': valign == 'top',
                 'items-end': valign == 'bottom',
-                'border border-gray-200 dark:border-gray-700': bordered,
+                'border-2 border-blue-400 dark:border-blue-300': bordered,
                 'mb-2': !bordered,
                 'px-2 py-2': !noPadding && !leftPadding,
                 'py-0 pl-2': leftPadding,

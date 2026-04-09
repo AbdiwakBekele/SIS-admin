@@ -84,45 +84,8 @@
                         </div>
                     </BaseDataView>
 
-                    <BaseDataView :label="$trans('plan.props.max_team_limit')">
-                        {{ plan.maxTeamLimit }}
-                        <BaseBadge design="error" v-if="plan.teamWiseLimit">{{
-                            $trans("plan.props.team_wise_limit")
-                        }}</BaseBadge>
-                    </BaseDataView>
-
-                    <BaseDataView :label="$trans('plan.props.max_user_limit')">
-                        {{ plan.maxUserLimit }}
-                    </BaseDataView>
-
-                    <BaseDataView
-                        :label="$trans('plan.props.max_student_per_team_limit')"
-                        v-if="plan.teamWiseLimit"
-                    >
-                        {{ plan.maxStudentPerTeamLimit }}
-                    </BaseDataView>
-
-                    <BaseDataView
-                        :label="$trans('plan.props.max_student_limit')"
-                        v-if="!plan.teamWiseLimit"
-                    >
-                        {{ plan.maxStudentLimit }}
-                    </BaseDataView>
-
-                    <BaseDataView
-                        :label="
-                            $trans('plan.props.max_employee_per_team_limit')
-                        "
-                        v-if="plan.teamWiseLimit"
-                    >
-                        {{ plan.maxEmployeePerTeamLimit }}
-                    </BaseDataView>
-
-                    <BaseDataView
-                        :label="$trans('plan.props.max_employee_limit')"
-                        v-if="!plan.teamWiseLimit"
-                    >
-                        {{ plan.maxEmployeeLimit }}
+                    <BaseDataView :label="$trans('plan.props.max_student_limit')">
+                        {{ plan.maxStudentLimit || plan.maxStudentPerTeamLimit }}
                     </BaseDataView>
 
                     <BaseDataView
@@ -146,16 +109,6 @@
                                 </li>
                             </template>
                         </ul>
-                    </BaseDataView>
-
-                    <BaseDataView :label="$trans('plan.props.modules')">
-                        <div class="flex flex-wrap gap-2">
-                            <BaseBadge
-                                design="primary"
-                                v-for="moduleDetail in plan.moduleDetails"
-                                >{{ moduleDetail.label }}</BaseBadge
-                            >
-                        </div>
                     </BaseDataView>
 
                     <BaseDataView

@@ -1,39 +1,53 @@
 <template>
     <BaseLoader :is-loading="isLoading">
-        <div class="mt-4 grid w-full grid-cols-1 gap-4 md:grid-cols-3">
+        <div class="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
             <template v-for="stat in state.stats">
                 <div
-                    class="dark:bg-dark-header rounded-lg bg-white px-4 py-2 shadow"
+                    class="dark:bg-dark-header overflow-hidden rounded-3xl bg-white p-0 shadow-lg ring-1 ring-slate-200/70"
                 >
-                    <div class="flex items-center">
-                        <div class="shrink-0">
+                    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 px-5 py-5 text-white">
+                        <div class="pointer-events-none absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-white/10"></div>
+                        <div class="relative flex items-start justify-between gap-4">
+                            <div class="min-w-0">
                             <h3
-                                class="mt-2 text-base font-normal uppercase text-gray-500"
+                                    class="text-xs font-semibold uppercase tracking-[0.22em] text-slate-300"
                             >
                                 {{ stat.title }}
                             </h3>
                             <p
-                                class="text-2xl font-semibold leading-none text-gray-900 dark:text-gray-400 sm:text-3xl"
+                                    class="mt-4 text-3xl font-semibold leading-none text-white sm:text-4xl"
                             >
                                 {{ stat.count }}
                             </p>
                             <h6
-                                class="mt-2 text-xs font-normal uppercase text-gray-700"
+                                    class="mt-4 text-xs font-medium uppercase tracking-[0.18em] text-slate-300"
                             >
                                 {{ stat.secondaryCount }}
                                 {{ stat.secondaryTitle }}
                             </h6>
                         </div>
                         <div
-                            class="ml-5 flex w-0 flex-1 items-center justify-end font-bold"
+                                class="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 text-white shadow-inner"
                         >
-                            <div class="rounded-full" :class="[stat.color]">
                                 <i
                                     :class="stat.icon"
-                                    class="flex h-12 w-12 items-center justify-center text-white"
+                                    class="text-xl"
                                 ></i>
-                            </div>
                         </div>
+                    </div>
+                    </div>
+                    <div class="flex items-center justify-between px-5 py-4">
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                                Status
+                            </p>
+                            <p class="mt-1 text-sm text-slate-600">
+                                Snapshot from your current dashboard feed
+                            </p>
+                        </div>
+                        <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+                            Live
+                        </span>
                     </div>
                 </div>
             </template>

@@ -32,9 +32,26 @@
                 <DataRow
                     v-for="subscriber in subscribers.data"
                     :key="subscriber.uuid"
+                    @doubleClick="
+                        router.push({
+                            name: 'SubscriberShow',
+                            params: { uuid: subscriber.uuid },
+                        })
+                    "
                 >
-                    <DataCell name="name">
-                        {{ subscriber.name }}
+                    <DataCell
+                        name="name"
+                        clickable
+                        @click="
+                            router.push({
+                                name: 'SubscriberShow',
+                                params: { uuid: subscriber.uuid },
+                            })
+                        "
+                    >
+                        <span class="font-medium text-blue-700 hover:underline">
+                            {{ subscriber.name }}
+                        </span>
                     </DataCell>
                     <DataCell name="email">
                         {{ subscriber.email }}
@@ -45,42 +62,49 @@
                     <DataCell name="createdAt">
                         {{ subscriber.createdAt.formatted }}
                     </DataCell>
-                    <DataCell name="action">
-                        <FloatingMenu>
-                            <FloatingMenuItem
-                                icon="fas fa-arrow-circle-right"
+                    <DataCell name="action" align="center">
+                        <div class="flex items-center justify-center gap-3 text-sm">
+                            <button
+                                type="button"
+                                class="text-blue-500 hover:text-blue-600"
+                                v-tooltip="$trans('general.show')"
                                 @click="
                                     router.push({
                                         name: 'SubscriberShow',
                                         params: { uuid: subscriber.uuid },
                                     })
                                 "
-                                >{{ $trans("general.show") }}</FloatingMenuItem
                             >
-                            <FloatingMenuItem
+                                <i class="fas fa-eye text-[12px]"></i>
+                            </button>
+                            <button
                                 v-if="perform('subscriber:edit')"
-                                icon="fas fa-edit"
+                                type="button"
+                                class="text-slate-600 hover:text-slate-700"
+                                v-tooltip="$trans('general.edit')"
                                 @click="
                                     router.push({
                                         name: 'SubscriberEdit',
                                         params: { uuid: subscriber.uuid },
                                     })
                                 "
-                                >{{ $trans("general.edit") }}</FloatingMenuItem
                             >
-                            <FloatingMenuItem
+                                <i class="fas fa-edit text-[12px]"></i>
+                            </button>
+                            <button
                                 v-if="perform('subscriber:delete')"
-                                icon="fas fa-trash"
+                                type="button"
+                                class="text-red-500 hover:text-red-600"
+                                v-tooltip="$trans('general.delete')"
                                 @click="
                                     emitter.emit('deleteItem', {
                                         uuid: subscriber.uuid,
                                     })
                                 "
-                                >{{
-                                    $trans("general.delete")
-                                }}</FloatingMenuItem
                             >
-                        </FloatingMenu>
+                                <i class="fas fa-trash text-[12px]"></i>
+                            </button>
+                        </div>
                     </DataCell>
                 </DataRow>
                 <template #actionButton>

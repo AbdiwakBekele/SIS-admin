@@ -79,9 +79,14 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    moduleName: {
+        type: String,
+        default: "",
+    },
 })
 
 const isLoading = ref(false)
+const itemsData = ref(null)
 
 const getPreRequisites = () => {
     let data = {}
@@ -108,6 +113,8 @@ const listItems = () => {
         params = { ...params, ...props.additionalQuery }
     }
 
+    console.log(props.initUrl);
+
     isLoading.value = true
     store
         .dispatch(props.initUrl + "list", {
@@ -117,10 +124,12 @@ const listItems = () => {
         })
         .then((response) => {
             isLoading.value = false
+            itemsData.value = response
             emit("setItems", response)
         })
         .catch((e) => {
             isLoading.value = false
+            itemsData.value = null
         })
 }
 
@@ -142,6 +151,10 @@ const deleteItem = async (payload) => {
         })
         .catch((e) => {
             isLoading.value = false
+            // For Academic Subject list, show an alert instead of relying solely on toast errors.
+            if (props.initUrl === "schoolSetup/subject/") {
+                window.alert("Please contact the Admin")
+            }
         })
 }
 

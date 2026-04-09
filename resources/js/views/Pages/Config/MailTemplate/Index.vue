@@ -29,9 +29,26 @@
                     <DataRow
                         v-for="mailTemplate in mailTemplates.data"
                         :key="mailTemplate.uuid"
+                        @doubleClick="
+                            router.push({
+                                name: 'ConfigMailTemplateShow',
+                                params: { uuid: mailTemplate.uuid },
+                            })
+                        "
                     >
-                        <DataCell name="name">
-                            {{ mailTemplate.name }}
+                        <DataCell
+                            name="name"
+                            clickable
+                            @click="
+                                router.push({
+                                    name: 'ConfigMailTemplateShow',
+                                    params: { uuid: mailTemplate.uuid },
+                                })
+                            "
+                        >
+                            <span class="font-medium text-blue-700 hover:underline">
+                                {{ mailTemplate.name }}
+                            </span>
                             <BaseBadge
                                 v-if="!mailTemplate.enabledAt.value"
                                 design="danger"

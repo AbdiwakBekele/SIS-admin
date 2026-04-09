@@ -29,9 +29,16 @@
                     <DataRow
                         v-for="smsTemplate in smsTemplates.data"
                         :key="smsTemplate.uuid"
+                        @doubleClick="showDetail(smsTemplate)"
                     >
-                        <DataCell name="name">
-                            {{ smsTemplate.name }}
+                        <DataCell
+                            name="name"
+                            clickable
+                            @click="showDetail(smsTemplate)"
+                        >
+                            <span class="font-medium text-blue-700 hover:underline">
+                                {{ smsTemplate.name }}
+                            </span>
                             <BaseBadge
                                 v-if="!smsTemplate.enabledAt.value"
                                 design="danger"

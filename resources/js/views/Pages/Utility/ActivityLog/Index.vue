@@ -55,6 +55,9 @@
                     <DataCell name="createdAt">
                         {{ activityLog.createdAt.formatted }}
                     </DataCell>
+                    <DataCell name="action" align="center">
+                        <span class="text-gray-400">-</span>
+                    </DataCell>
                 </DataRow>
             </DataTable>
         </ParentTransition>

@@ -3,21 +3,21 @@
         <a
             v-if="to"
             @click="router.push({ name: to })"
-            class="text-primary hover:text-dark-primary cursor-pointer font-medium dark:text-gray-400 dark:focus:text-gray-300"
+            class="cursor-pointer font-medium text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-200 dark:focus:text-blue-200"
         >
             <slot></slot>
         </a>
         <a
             v-else-if="route"
             @click="router.push(route)"
-            class="text-primary hover:text-dark-primary cursor-pointer font-medium dark:text-gray-400 dark:focus:text-gray-300"
+            class="cursor-pointer font-medium text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-200 dark:focus:text-blue-200"
         >
             <slot></slot>
         </a>
         <a
             v-else-if="href"
             :href="href"
-            class="text-primary hover:text-dark-primary font-medium dark:text-gray-400 dark:focus:text-gray-300"
+            class="font-medium text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-200 dark:focus:text-blue-200"
         >
             <slot></slot>
         </a>

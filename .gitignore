@@ -1,8 +1,16 @@
 /node_modules
 /public/build
 /public/site/build
+/public/hot
 /public/storage
 /storage/*.key
+/storage/logs/*.log
+/storage/framework/cache/data/*
+/storage/framework/cache/data/**/*
+/storage/framework/sessions/*
+/storage/framework/views/*.php
+/storage/debugbar/*
+/bootstrap/cache/*.php
 !/vendor/
 /vendor/*
 !/vendor/mint/
@@ -10,6 +18,13 @@
 .env
 .env.backup
 .phpunit.result.cache
+.phpunit.cache
+.php-cs-fixer.cache
+.eslintcache
+coverage/
+dist/
+tmp/
+temp/
 ray.php
 Homestead.json
 Homestead.yaml
@@ -17,3 +32,6 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+/.fleet
+Thumbs.db
+.DS_Store

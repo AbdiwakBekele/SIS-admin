@@ -21,7 +21,21 @@ import ChildTransition from "./ChildTransition.vue"
 import MenuParentTransition from "./MenuParentTransition.vue"
 import CustomField from "./CustomField.vue"
 
+import TeamSelection from "@views/Layouts/Partials/TeamSelection.vue"
+import PeriodSelection from "@views/Layouts/Partials/PeriodSelection.vue"
+import SessionWisePeriodSelection from "@views/Layouts/Partials/SessionWisePeriodSelection.vue"
+import TimesheetClock from "@views/Layouts/Partials/TimesheetClock.vue"
+
+import NameInput from "@js/components/App/NameInput.vue"
 import AddressInput from "@js/components/App/AddressInput.vue"
+import PaymentMethodInput from "@js/components/App/PaymentMethodInput.vue"
+import PaymentMethodDetail from "@js/components/App/PaymentMethodDetail.vue"
+import LedgerBalance from "@js/components/App/LedgerBalance.vue"
+import AudienceInput from "@js/components/App/AudienceInput.vue"
+import MarkdownContent from "@js/components/App/MarkdownContent.vue"
+import ViewLog from "@js/components/App/ViewLog.vue"
+import DebugPanel from "@js/components/App/DebugPanel.vue"
+import PasswordResetModal from "@js/components/Student/PasswordResetModal.vue"
 
 export default (app) => {
     app.component("GuestHeader", GuestHeader)
@@ -47,5 +61,18 @@ export default (app) => {
     app.component("MenuParentTransition", MenuParentTransition)
     app.component("CustomField", CustomField)
 
+    app.component("TeamSelection", TeamSelection)
+    app.component("PeriodSelection", PeriodSelection)
+    app.component("SessionWisePeriodSelection", SessionWisePeriodSelection)
+    app.component("TimesheetClock", TimesheetClock)
+    app.component("NameInput", NameInput)
     app.component("AddressInput", AddressInput)
+    app.component("PaymentMethodInput", PaymentMethodInput)
+    app.component("PaymentMethodDetail", PaymentMethodDetail)
+    app.component("LedgerBalance", LedgerBalance)
+    app.component("AudienceInput", AudienceInput)
+    app.component("MarkdownContent", MarkdownContent)
+    app.component("ViewLog", ViewLog)
+    app.component("DebugPanel", DebugPanel)
+    app.component("PasswordResetModal", PasswordResetModal)
 }

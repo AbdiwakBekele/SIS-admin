@@ -20,7 +20,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, reactive, watch, onMounted } from "vue"
+import { ref, reactive, watch, onMounted, onBeforeUnmount } from "vue"
 import { useStore } from "vuex"
 
 const store = useStore()
@@ -61,7 +61,31 @@ watch(
 )
 
 onMounted(() => {
-    window.addEventListener("keydown", (event) => {
+    window.addEventListener("keydown", onKeyDown)
+})
+
+onBeforeUnmount(() => {
+    window.removeEventListener("keydown", onKeyDown)
+})
+
+const isTypingTarget = (target) => {
+    if (!target) {
+        return false
+    }
+
+    const tagName = target.tagName?.toLowerCase()
+
+    return (
+        ["input", "textarea", "select"].includes(tagName) ||
+        target.isContentEditable
+    )
+}
+
+const onKeyDown = (event) => {
+        if (isTypingTarget(event.target)) {
+            return
+        }
+
         if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) {
             return
         }
@@ -81,6 +105,5 @@ onMounted(() => {
             state.results = []
             showSearch.value = false
         }
-    })
-})
+}
 </script>

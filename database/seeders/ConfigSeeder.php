@@ -16,7 +16,7 @@ class ConfigSeeder extends Seeder
     {
         $config = Config::firstOrCreate(['name' => 'general']);
         $config->value = [
-            'app_name' => 'Mint School',
+            'app_name' => 'Lighthouseducation',
         ];
         $config->save();
 
@@ -48,9 +48,9 @@ class ConfigSeeder extends Seeder
             'unavailable_subdomain' => 'webmaster,admin,system,test,testing',
             'default_timezone' => 'Asia/Kolkata',
             'default_currency' => 'INR',
-            'default_app_name' => 'Mint School',
-            'default_author' => 'ScriptMint',
-            'default_footer_credit' => 'Designed with love by ScriptMint',
+            'default_app_name' => 'Lighthouseducation',
+            'default_author' => 'Lighthouseducation',
+            'default_footer_credit' => 'Designed with Lighthouseducation',
         ];
         $config->save();
 

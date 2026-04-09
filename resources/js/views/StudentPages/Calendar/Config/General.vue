@@ -1,0 +1,123 @@
+<template>
+    <PageHeader
+        :title="$trans(route.meta.label)"
+        :navs="[{ label: $trans('calendar.calendar'), path: 'Calendar' }]"
+    >
+    </PageHeader>
+
+    <ParentTransition appear :visibility="true">
+        <FormAction
+            :pre-requisites="{ data: ['datePlaceholders'] }"
+            @setPreRequisites="setPreRequisites"
+            :init-url="initUrl"
+            data-fetch="calendar"
+            :init-form="initForm"
+            :form="form"
+            action="store"
+            stay-on
+            cancel-action
+            @cancelled="router.back()"
+        >
+            <div class="grid grid-cols-3 gap-4">
+                <div class="col-span-3 sm:col-span-1">
+                    <BaseInput
+                        type="text"
+                        v-model="form.eventNumberPrefix"
+                        name="eventNumberPrefix"
+                        :label="
+                            $trans('calendar.event.config.props.number_prefix')
+                        "
+                        v-model:error="formErrors.eventNumberPrefix"
+                    />
+                </div>
+                <div class="col-span-3 sm:col-span-1">
+                    <BaseInput
+                        type="number"
+                        v-model="form.eventNumberDigit"
+                        name="eventNumberDigit"
+                        :label="
+                            $trans('calendar.event.config.props.number_digit')
+                        "
+                        v-model:error="formErrors.eventNumberDigit"
+                    />
+                </div>
+                <div class="col-span-3 sm:col-span-1">
+                    <BaseInput
+                        type="text"
+                        v-model="form.eventNumberSuffix"
+                        name="eventNumberSuffix"
+                        :label="
+                            $trans('calendar.event.config.props.number_suffix')
+                        "
+                        v-model:error="formErrors.eventNumberSuffix"
+                    />
+                </div>
+                <div class="col-span-3 sm:col-span-1">
+                    <BaseSwitch
+                        vertical
+                        v-model="form.showCelebrationInDashboard"
+                        name="showCelebrationInDashboard"
+                        :label="
+                            $trans(
+                                'calendar.config.props.show_celebration_in_dashboard'
+                            )
+                        "
+                        v-model:error="formErrors.showCelebrationInDashboard"
+                    />
+                </div>
+                <div class="col-span-3">
+                    <BaseAlert size="xs" design="info">{{
+                        datePlaceholderInfo
+                    }}</BaseAlert>
+                </div>
+            </div>
+        </FormAction>
+    </ParentTransition>
+</template>
+
+<script>
+export default {
+    name: "CalendarConfigGeneral",
+}
+</script>
+
+<script setup>
+import { inject, reactive, computed } from "vue"
+import { useRoute, useRouter } from "vue-router"
+import { getFormErrors } from "@core/helpers/action"
+
+const route = useRoute()
+const router = useRouter()
+
+const $trans = inject("$trans")
+
+const initUrl = "config/"
+const formErrors = getFormErrors(initUrl)
+const datePlaceholderInfo = computed(() =>
+    $trans("global.placeholder_info", {
+        attribute: preRequisites.datePlaceholders,
+    })
+)
+
+const preRequisites = reactive({
+    datePlaceholders: "",
+})
+
+const initForm = {
+    eventNumberPrefix: "",
+    eventNumberSuffix: "",
+    eventNumberDigit: 0,
+    showCelebrationInDashboard: false,
+    type: "calendar",
+}
+
+const form = reactive({ ...initForm })
+
+const setPreRequisites = (data) => {
+    Object.assign(preRequisites, {
+        datePlaceholders: data.datePlaceholders
+            .map((item) => item.value)
+            .join(", "),
+    })
+}
+</script>

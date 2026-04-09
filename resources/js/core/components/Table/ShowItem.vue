@@ -58,6 +58,12 @@ const props = defineProps({
 const isLoading = ref(false)
 
 const getItem = async () => {
+
+    console.log('Vuex Url:' + props.initUrl);
+    console.log('Module Url:' + props.moduleUuid);
+
+
+
     isLoading.value = true
     await store
         .dispatch(props.initUrl + "get", {
@@ -66,6 +72,7 @@ const getItem = async () => {
             params: props.additionalQuery,
         })
         .then((response) => {
+            console.log(response);
             isLoading.value = false
             emit("setItem", response)
         })

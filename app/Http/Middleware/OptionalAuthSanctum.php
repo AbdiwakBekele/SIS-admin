@@ -10,13 +10,11 @@ class OptionalAuthSanctum
 {
     public function handle(Request $request, Closure $next, ...$guards)
     {
-        if ($request->bearerToken()) {
-            try {
-                Auth::shouldUse('sanctum');
-                Auth::authenticate($guards);
-            } catch (\Exception $e) {
-                // Silently continue if authentication fails
-            }
+        try {
+            Auth::shouldUse('sanctum');
+            Auth::authenticate($guards);
+        } catch (\Exception $e) {
+            // Silently continue if authentication fails
         }
 
         return $next($request);

@@ -1,20 +1,36 @@
 <template>
-    <BaseCard no-padding no-content-padding :is-loading="isLoading">
-        <template #title>
-            {{ $trans("general.greeting_message", { name: user }) }}
-            <h3 class="text-2xl font-semibold">
-                {{ moment().format("dddd Do, MMMM YYYY") }}
-            </h3>
-        </template>
-        <div class="scroller-thin-y scroller-hidden max-h-96">
+    <div class="overflow-hidden rounded-[28px] bg-white shadow-lg ring-1 ring-slate-200/70 dark:bg-neutral-800 dark:ring-white/10">
+        <div class="relative overflow-hidden bg-gradient-to-br from-blue-900 via-blue-700 to-blue-500 px-6 py-5 text-white">
+            <div class="pointer-events-none absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-white/10"></div>
+            <div class="relative flex items-start justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/20 backdrop-blur">
+                        <i class="fa-solid fa-briefcase text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-blue-100/85">
+                            Productivity
+                        </p>
+                        <h2 class="mt-1 text-xl font-semibold">
+                            {{ $trans("general.greeting_message", { name: user }) }}
+                        </h2>
+                    </div>
+                </div>
+                <span class="rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
+                    {{ moment().format("ddd, MMM D") }}
+                </span>
+            </div>
+        </div>
+
+        <div class="scroller-thin-y scroller-hidden max-h-[420px] space-y-3 p-4">
             <template v-for="agenda in agendas">
                 <div
-                    class="border-b border-gray-200 p-4 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-neutral-700"
+                    class="rounded-2xl border border-slate-200 p-4 transition hover:bg-slate-50 dark:border-gray-700 dark:hover:bg-neutral-700"
                 >
                     <div class="flex items-center">
                         <div class="shrink-0">
                             <div
-                                class="rounded-full p-2"
+                                class="rounded-2xl p-3"
                                 :class="[agenda.color]"
                             >
                                 <i
@@ -42,7 +58,7 @@
                 }}</BaseAlert>
             </div>
         </div>
-    </BaseCard>
+    </div>
 </template>
 
 <script>

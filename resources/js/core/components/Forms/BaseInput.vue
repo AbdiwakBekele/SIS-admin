@@ -1,57 +1,47 @@
 <template>
     <div>
         <div class="flex justify-between">
-            <BaseLabel :for="state.uniqueId" v-if="label">
-                {{ label }}
-                <span v-if="labelHint" class="ml-2" v-tooltip="labelHint"
-                    ><i class="fas fa-question-circle"></i
-                ></span>
+            <BaseLabel :for="state.uniqueId" v-if="(label || labelHtml) && !floatingLabel" :required="required">
+                <template v-if="labelHtml">
+                    <span v-html="labelHtml"></span>
+                    <span v-if="labelHint" class="ml-2" v-tooltip="labelHint"><i class="fas fa-question-circle"></i></span>
+                </template>
+                <template v-else>
+                    {{ label }}
+                    <span v-if="labelHint" class="ml-2" v-tooltip="labelHint"><i class="fas fa-question-circle"></i></span>
+                </template>
             </BaseLabel>
             <slot name="additional-label"></slot>
         </div>
-        <div
-            class="mt-1"
-            :class="{
-                relative:
-                    leadingIcon ||
-                    trailingIcon ||
-                    trailingText ||
-                    currencyItem.trailingText ||
-                    percentage,
-                flex: leadingText || currencyItem.leadingText,
-                'rounded-md shadow-sm': rounded,
-            }"
-        >
-            <span
-                v-if="leadingText || currencyItem.leadingText"
-                class="inline-flex items-center border-gray-300 px-3 text-gray-500 sm:text-sm"
-                :class="{
+        <div class="mt-1" :class="{
+            'floating-label-wrapper': floatingLabel,
+            relative:
+                leadingIcon ||
+                trailingIcon ||
+                trailingText ||
+                currencyItem.trailingText ||
+                percentage,
+            flex: leadingText || currencyItem.leadingText,
+            'rounded-md shadow-sm': rounded,
+        }">
+            <span v-if="leadingText || currencyItem.leadingText"
+                class="inline-flex items-center border-gray-300 px-3 text-gray-500 sm:text-sm" :class="{
                     'pl-10': leadingIcon,
                     'border-b-2': !invisible,
                     'rounded-l-md': rounded,
                     'border-r': !invisible && leadingText,
                     'border-primary dark:border-gray-700': state.focused,
                     'border-gray-300 dark:border-gray-700': !state.focused,
-                }"
-            >
+                }">
                 {{ leadingText || currencyItem.leadingText }}
             </span>
-            <div
-                v-if="leadingIcon"
-                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
-            >
-                <i
-                    class="text-gray-400"
-                    :class="leadingIcon"
-                    aria-hidden="true"
-                >
+            <div v-if="leadingIcon" class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                <i class="text-gray-400" :class="leadingIcon" aria-hidden="true">
                 </i>
             </div>
-            <input
-                :id="state.uniqueId"
-                v-bind="$attrs"
-                :placeholder="placeholder || label"
-                class="focus:border-primary block w-full border-0 border-gray-300 bg-inherit focus:ring-0 disabled:bg-gray-200 dark:border-gray-700 dark:text-gray-200 dark:focus:border-gray-200 dark:disabled:bg-gray-700"
+
+            <input :id="state.uniqueId" v-bind="$attrs" :placeholder="floatingLabel ? ' ' : placeholder || label"
+                class="focus:border-primary block w-full border border-gray-300 rounded-lg bg-inherit focus:ring-0 disabled:bg-gray-200 dark:border-gray-700 dark:text-gray-200 dark:focus:border-gray-200 dark:disabled:bg-gray-700"
                 :class="{
                     'text-sm': textSize == 'sm',
                     'text-lg': textSize == 'lg',
@@ -59,7 +49,6 @@
                     'text-2xl': textSize == '2xl',
                     'text-right': align == 'right',
                     'text-center': align == 'center',
-                    'border-b-2': !invisible,
                     'pr-12': align == 'right' && trailingText,
                     'pl-10': leadingIcon,
                     'pr-10':
@@ -77,52 +66,35 @@
                             currencyItem.leadingText ||
                             adjacentRight),
                     'rounded-l-md': rounded && adjacentLeft,
-                }"
-                @focus="state.focused = true"
-                @blur="state.focused = false"
-                :type="currency || percentage ? 'number' : $attrs.type"
-                :step="
-                    currency
-                        ? currencyItem.step
-                        : percentage
+                    'floating-label-input': floatingLabel,
+                }" @focus="state.focused = true" @blur="state.focused = false"
+                :type="currency || percentage ? 'number' : $attrs.type" :step="currency
+                    ? currencyItem.step
+                    : percentage
                         ? 0.01
                         : $attrs.step
-                "
-                :value="modelValue"
-                @input="updateInput"
-            />
-            <div
-                v-if="
-                    trailingIcon ||
-                    trailingText ||
-                    currencyItem.trailingText ||
-                    percentage
-                "
-                class="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3"
-            >
-                <i
-                    v-if="trailingIcon"
-                    class="text-gray-400"
-                    :class="trailingIcon"
-                    aria-hidden="true"
-                >
+                    " :value="modelValue" @input="updateInput" />
+
+            <label v-if="floatingLabel" :for="state.uniqueId" class="floating-label" :class="{
+                'floating-label-active': state.focused || modelValue,
+            }">
+                {{ label }}
+            </label>
+            <div v-if="
+                trailingIcon ||
+                trailingText ||
+                currencyItem.trailingText ||
+                percentage
+            " class="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3">
+                <i v-if="trailingIcon" class="text-gray-400" :class="trailingIcon" aria-hidden="true">
                 </i>
-                <span
-                    v-if="currencyItem.trailingText"
-                    class="border-gray-300 text-gray-500 sm:text-sm"
-                >
+                <span v-if="currencyItem.trailingText" class="border-gray-300 text-gray-500 sm:text-sm">
                     {{ currencyItem.trailingText }}
                 </span>
-                <span
-                    v-if="trailingText"
-                    class="border-gray-300 text-gray-500 sm:text-sm"
-                >
+                <span v-if="trailingText" class="border-gray-300 text-gray-500 sm:text-sm">
                     {{ trailingText }}
                 </span>
-                <span
-                    v-if="percentage"
-                    class="border-gray-300 text-gray-500 sm:text-sm"
-                >
+                <span v-if="percentage" class="border-gray-300 text-gray-500 sm:text-sm">
                     %
                 </span>
             </div>
@@ -156,6 +128,14 @@ const props = defineProps({
         type: String,
         default: "",
     },
+    labelHtml: {
+        type: String,
+        default: "",
+    },
+    required: {
+        type: Boolean,
+        default: false,
+    },
     currency: {
         type: Boolean,
         default: false,
@@ -170,7 +150,7 @@ const props = defineProps({
     },
     placeholder: {
         type: String,
-        default: "",
+        default: " ",
     },
     modelValue: {
         type: [String, Number],
@@ -228,6 +208,10 @@ const props = defineProps({
         type: String,
         default: "sm",
     },
+    floatingLabel: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 const defaultCurrencyDetail = computed(() =>
@@ -281,3 +265,37 @@ onMounted(() => {
     updateCurrency()
 })
 </script>
+
+<style scoped>
+.floating-label-wrapper {
+    position: relative;
+}
+
+.floating-label-input {
+    padding-top: 1.25rem !important;
+    padding-bottom: 0.25rem !important;
+}
+
+.floating-label {
+    position: absolute;
+    left: 0.75rem;
+    top: 0.75rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+    pointer-events: none;
+    transition: all 0.2s ease-out;
+}
+
+.floating-label-active {
+    transform: translateY(-0.6rem) scale(0.85);
+    color: #6b7280;
+}
+
+:deep(.dark) .floating-label {
+    color: #9ca3af;
+}
+
+:deep(.dark) .floating-label-active {
+    color: #e5e7eb;
+}
+</style>

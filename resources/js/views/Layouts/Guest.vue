@@ -1,16 +1,18 @@
 <template>
     <NotificationBar type="guest" />
-    <div
-        class="dark:bg-dark-body scroller-thin-y scroller-hidden flex min-h-screen bg-gray-50"
-    >
+    <div class="dark:bg-dark-body scroller-thin-y scroller-hidden flex min-h-screen bg-gray-50">
         <div class="relative hidden flex-1 md:block">
-            <img
-                class="absolute inset-0 h-full w-full object-cover"
-                :src="getGuestBackground"
-                alt=""
-            />
+            <img class="absolute inset-0 h-full w-full object-cover" :src="getGuestBackground" alt="" />
         </div>
         <div class="flex-1 p-4 sm:p-16 lg:flex-none lg:p-32">
+            <div class="flex justify-end" v-if="enableGuestPayment">
+                <!-- <BaseButton
+                    size="xs"
+                    @click="router.push({ name: 'GuestPayment' })"
+                    >{{ $trans("student.payment.online") }}</BaseButton
+                > -->
+            </div>
+
             <div class="flex h-full flex-col justify-center">
                 <div class="flex justify-center">
                     <a href="/" class="mb-6">
@@ -18,9 +20,7 @@
                     </a>
                 </div>
 
-                <div
-                    class="dark:bg-dark-header mx-auto w-full rounded-xl bg-white px-8 py-10 shadow-md sm:w-96"
-                >
+                <div class="dark:bg-dark-header mx-auto w-full rounded-xl bg-white px-8 py-10 shadow-md sm:w-96">
                     <router-view />
                 </div>
 
@@ -35,12 +35,21 @@ export default {}
 </script>
 
 <script setup>
+import { useRouter } from "vue-router"
 import { getConfig } from "@core/helpers/action"
+import { computed } from "vue"
 
-const getGuestBackground = getConfig("assets.guestBackground")
+const router = useRouter()
 
-const getIcon =
+const getGuestBackground = computed(() => getConfig("assets.guestBackground").value)
+
+const getIcon = computed(() =>
     getConfig("layout.display").value == "dark"
-        ? getConfig("assets.iconLight")
-        : getConfig("assets.icon")
+        ? getConfig("assets.iconLight").value
+        : getConfig("assets.icon").value
+)
+
+const enableGuestPayment = computed(() =>
+    getConfig("feature.enableGuestPayment").value
+)
 </script>

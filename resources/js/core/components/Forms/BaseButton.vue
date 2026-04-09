@@ -15,15 +15,15 @@
             'px-4 py-2 text-sm': size === 'md',
             'px-4 py-2 text-base': size === 'lg',
             'px-6 py-3 text-base': size === 'xl',
-            'rounded-xl': !roundedFull,
+            'rounded-lg': !roundedFull,
             'rounded-full': roundedFull,
-            'dark:after:bg-dark-header text-gray-600 before:bg-gray-100 after:bg-white focus:ring-white dark:text-gray-400 dark:before:bg-neutral-700':
+            'border border-blue-200 dark:border-blue-400 text-gray-600 before:bg-gray-100 after:bg-white hover:bg-blue-50 hover:text-blue-700 focus:ring-blue-300 dark:text-gray-400 dark:before:bg-neutral-700 dark:hover:bg-blue-900/10 dark:hover:text-blue-200':
                 design === 'white',
-            'after:bg-primary before:bg-dark-primary text-secondary focus:ring-primary dark:focus:ring-dark-header dark:text-gray-200 dark:before:bg-gray-500 dark:after:bg-gray-700':
+            'after:bg-gradient-to-br after:from-blue-700 after:via-blue-600 after:to-blue-500 before:bg-gradient-to-br before:from-blue-800 before:via-blue-700 before:to-blue-600 text-white focus:ring-blue-600 dark:focus:ring-blue-600 dark:text-white dark:before:from-blue-800 dark:before:via-blue-700 dark:before:to-blue-600 dark:after:from-blue-700 dark:after:via-blue-600 dark:after:to-blue-500':
                 design === 'primary',
             'after:bg-secondary before:bg-dark-secondary dark:after:bg-dark-body text-primary focus:ring-secondary dark:focus:ring-dark-body dark:text-gray-400 dark:before:bg-neutral-700':
                 design === 'secondary',
-            'after:bg-success before:bg-dark-success text-secondary focus:ring-success':
+            'after:bg-green-600 before:bg-green-700 text-white focus:ring-green-500 dark:focus:ring-green-500 dark:text-white dark:before:bg-green-700 dark:after:bg-green-600':
                 design === 'success',
             'text-white before:bg-[#1f4494] after:bg-[#3b5998] focus:ring-[#3b5998]':
                 design === 'facebook',
@@ -76,7 +76,7 @@ const props = defineProps({
                 "facebook",
             ].includes(value)
         },
-        default: "primary",
+        default: "secondary",
     },
     disabled: {
         type: Boolean,

@@ -41,28 +41,35 @@
                 module="plan"
                 @refresh="emitter.emit('listItems')"
             >
-                <DataRow v-for="plan in plans.data" :key="plan.uuid">
-                    <DataCell name="name">
-                        {{ plan.name }}
+                <DataRow
+                    v-for="plan in plans.data"
+                    :key="plan.uuid"
+                    @doubleClick="
+                        router.push({
+                            name: 'PlanShow',
+                            params: { uuid: plan.uuid },
+                        })
+                    "
+                >
+                    <DataCell
+                        name="name"
+                        clickable
+                        @click="
+                            router.push({
+                                name: 'PlanShow',
+                                params: { uuid: plan.uuid },
+                            })
+                        "
+                    >
+                        <span class="font-medium text-blue-700 hover:underline">
+                            {{ plan.name }}
+                        </span>
                     </DataCell>
                     <DataCell name="code">
                         {{ plan.code }}
                     </DataCell>
-                    <DataCell name="maxTeamLimit">
-                        {{ plan.maxTeamLimit }}
-                        <TextMuted block>{{ plan.maxUserLimit }}</TextMuted>
-                    </DataCell>
                     <DataCell name="maxStudentLimit">
-                        {{ plan.maxStudentLimit ?? "-" }}
-                        <TextMuted block>{{
-                            plan.maxEmployeeLimit ?? "-"
-                        }}</TextMuted>
-                    </DataCell>
-                    <DataCell name="maxStudentPerTeamLimit">
-                        {{ plan.maxStudentPerTeamLimit ?? "-" }}
-                        <TextMuted block>{{
-                            plan.maxEmployeePerTeamLimit ?? "-"
-                        }}</TextMuted>
+                        {{ plan.maxStudentLimit || plan.maxStudentPerTeamLimit || "-" }}
                     </DataCell>
                     <DataCell name="isActive">
                         <i
@@ -84,26 +91,6 @@
                             v-else
                         ></i>
                     </DataCell>
-                    <DataCell name="hasActivationCharge">
-                        <i
-                            class="far fa-lg fa-circle-check text-success"
-                            v-if="plan.hasActivationCharge"
-                        ></i>
-                        <i
-                            class="far fa-lg fa-circle-xmark text-danger"
-                            v-else
-                        ></i>
-                    </DataCell>
-                    <DataCell name="enableTax">
-                        <i
-                            class="far fa-lg fa-circle-check text-success"
-                            v-if="plan.enableTax"
-                        ></i>
-                        <i
-                            class="far fa-lg fa-circle-xmark text-danger"
-                            v-else
-                        ></i>
-                    </DataCell>
                     <DataCell name="isVisible">
                         <i
                             class="far fa-lg fa-circle-check text-success"
@@ -114,67 +101,76 @@
                             v-else
                         ></i>
                     </DataCell>
-                    <DataCell name="modules">
-                        <div class="flex flex-wrap gap-2">
-                            <BaseBadge
-                                design="primary"
-                                v-for="moduleName in plan.moduleSummary"
-                                >{{ moduleName }}</BaseBadge
+                    <DataCell name="priceSummary">
+                        <div class="space-y-1">
+                            <div
+                                v-for="price in visiblePrices(plan)"
+                                :key="`${price.frequency.value}-${price.currency.name}`"
                             >
+                                {{ price.amount.formatted }} {{ price.frequency.label }}
+                            </div>
                         </div>
                     </DataCell>
                     <DataCell name="createdAt">
                         {{ plan.createdAt.formatted }}
                     </DataCell>
-                    <DataCell name="action">
-                        <FloatingMenu>
-                            <FloatingMenuItem
-                                icon="fas fa-arrow-circle-right"
+                    <DataCell name="action" align="center">
+                        <div class="flex items-center justify-center gap-3 text-sm">
+                            <button
+                                type="button"
+                                class="text-blue-500 hover:text-blue-600"
+                                v-tooltip="$trans('general.show')"
                                 @click="
                                     router.push({
                                         name: 'PlanShow',
                                         params: { uuid: plan.uuid },
                                     })
                                 "
-                                >{{ $trans("general.show") }}</FloatingMenuItem
                             >
-                            <FloatingMenuItem
+                                <i class="fas fa-eye text-[12px]"></i>
+                            </button>
+                            <button
                                 v-if="perform('plan:edit')"
-                                icon="fas fa-edit"
+                                type="button"
+                                class="text-slate-600 hover:text-slate-700"
+                                v-tooltip="$trans('general.edit')"
                                 @click="
                                     router.push({
                                         name: 'PlanEdit',
                                         params: { uuid: plan.uuid },
                                     })
                                 "
-                                >{{ $trans("general.edit") }}</FloatingMenuItem
                             >
-                            <FloatingMenuItem
+                                <i class="fas fa-edit text-[12px]"></i>
+                            </button>
+                            <button
                                 v-if="perform('plan:create')"
-                                icon="fas fa-copy"
+                                type="button"
+                                class="text-green-500 hover:text-green-600"
+                                v-tooltip="$trans('general.duplicate')"
                                 @click="
                                     router.push({
                                         name: 'PlanDuplicate',
                                         params: { uuid: plan.uuid },
                                     })
                                 "
-                                >{{
-                                    $trans("general.duplicate")
-                                }}</FloatingMenuItem
                             >
-                            <FloatingMenuItem
+                                <i class="fas fa-copy text-[12px]"></i>
+                            </button>
+                            <button
                                 v-if="perform('plan:delete')"
-                                icon="fas fa-trash"
+                                type="button"
+                                class="text-red-500 hover:text-red-600"
+                                v-tooltip="$trans('general.delete')"
                                 @click="
                                     emitter.emit('deleteItem', {
                                         uuid: plan.uuid,
                                     })
                                 "
-                                >{{
-                                    $trans("general.delete")
-                                }}</FloatingMenuItem
                             >
-                        </FloatingMenu>
+                                <i class="fas fa-trash text-[12px]"></i>
+                            </button>
+                        </div>
                     </DataCell>
                 </DataRow>
                 <template #actionButton>
@@ -236,4 +232,13 @@ const plans = reactive({})
 const setItems = (data) => {
     Object.assign(plans, data)
 }
+
+const visiblePrices = (plan) =>
+    (plan.price || []).filter(
+        (price) =>
+            (plan.enableMonthlySubscription &&
+                price.frequency.value === "monthly") ||
+            (plan.enableAnnualSubscription &&
+                price.frequency.value === "annually")
+    )
 </script>

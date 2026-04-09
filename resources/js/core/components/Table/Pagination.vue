@@ -1,52 +1,38 @@
 <template>
-    <div
-        class="flex items-center justify-between px-2 py-3 sm:rounded-bl-lg sm:rounded-br-lg"
-        :class="{
-            'bg-white dark:bg-neutral-700 border-t border-gray-200 dark:border-gray-700 ':
-                !transparent,
-        }"
-        v-if="meta.from && meta.to"
-    >
-        <div
-            class="flex flex-1 justify-between text-gray-700 dark:text-gray-400 sm:hidden"
-            v-if="meta.lastPage >= 1"
-        >
+    <div class="flex items-center justify-between px-2 py-3 sm:rounded-bl-2xl sm:rounded-br-2xl" :class="{
+        'bg-white/90 dark:bg-neutral-900/90 border-t border-gray-200 dark:border-neutral-800 backdrop-blur': !transparent,
+    }" v-if="meta.from && meta.to">
+        <!-- Mobile: Prev / Next -->
+        <div class="flex flex-1 justify-between text-gray-700 dark:text-gray-300 sm:hidden" v-if="meta.lastPage >= 1">
             <div>
-                <span
-                    v-if="currentPage <= 1"
-                    class="dark:bg-dark-body relative inline-flex items-center rounded-md border border-gray-300 bg-gray-200 px-4 py-2 text-sm font-medium dark:border-gray-700"
-                >
+                <span v-if="currentPage <= 1" class="relative inline-flex items-center rounded-full px-4 py-2 text-sm font-medium 
+                 ring-1 ring-black/5 dark:ring-white/10 bg-gray-100 dark:bg-neutral-800
+                 text-gray-400 cursor-not-allowed">
                     {{ $trans("pagination.previous") }}
                 </span>
-                <a
-                    v-else
-                    @click="updateCurrentPage(currentPage - 1)"
-                    href="#"
-                    class="dark:bg-dark-body relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium hover:bg-gray-50 dark:border-gray-700"
-                >
+                <a v-else @click="updateCurrentPage(currentPage - 1)" href="#" class="relative inline-flex items-center rounded-full px-4 py-2 text-sm font-medium 
+                 ring-1 ring-black/5 dark:ring-white/10 bg-white dark:bg-neutral-900
+                 hover:bg-gradient-to-r hover:from-blue-50 hover:via-blue-50 hover:to-blue-50 transition">
                     {{ $trans("pagination.previous") }}
                 </a>
             </div>
+
             <div>
-                <span
-                    v-if="currentPage >= meta.lastPage"
-                    class="dark:bg-dark-body relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-gray-200 px-4 py-2 text-sm font-medium dark:border-gray-700"
-                >
+                <span v-if="currentPage >= meta.lastPage" class="relative ml-3 inline-flex items-center rounded-full px-4 py-2 text-sm font-medium 
+                 ring-1 ring-black/5 dark:ring-white/10 bg-gray-100 dark:bg-neutral-800
+                 text-gray-400 cursor-not-allowed">
                     {{ $trans("pagination.next") }}
                 </span>
-                <a
-                    v-else
-                    @click="updateCurrentPage(+currentPage + 1)"
-                    href="#"
-                    class="dark:bg-dark-body relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium hover:bg-gray-50 dark:border-gray-700"
-                >
+                <a v-else @click="updateCurrentPage(+currentPage + 1)" href="#" class="relative ml-3 inline-flex items-center rounded-full px-4 py-2 text-sm font-medium 
+                 ring-1 ring-black/5 dark:ring-white/10 bg-white dark:bg-neutral-900
+                 hover:bg-gradient-to-r hover:from-blue-50 hover:via-blue-50 hover:to-blue-50 transition">
                     {{ $trans("pagination.next") }}
                 </a>
             </div>
         </div>
-        <div
-            class="hidden text-gray-700 dark:text-gray-400 sm:flex sm:flex-1 sm:items-center sm:justify-between"
-        >
+
+        <!-- Desktop -->
+        <div class="hidden text-gray-700 dark:text-gray-300 sm:flex sm:flex-1 sm:items-center sm:justify-between">
             <div>
                 <p class="text-sm" v-if="meta.from && meta.to">
                     {{
@@ -58,113 +44,67 @@
                     }}
                 </p>
             </div>
+
             <div class="flex items-center justify-between space-x-4">
-                <DropdownButton
-                    direction="up"
-                    v-if="paginations.length && !cardView"
-                    :label="
-                        $trans('pagination.list_per_page', {
-                            attribute: perPage,
-                        })
-                    "
-                >
+                <!-- Per-page dropdown (unchanged logic, refreshed styles come from your Dropdown components) -->
+                <DropdownButton direction="up" v-if="paginations.length && !cardView"
+                    :label="$trans('pagination.list_per_page', { attribute: perPage })"
+                    class="!ring-1 !ring-black/5 dark:!ring-white/10 !rounded-full !bg-white dark:!bg-neutral-900">
                     <div v-for="pagination in paginations" :key="pagination">
                         <template v-if="pagination != perPage">
-                            <DropdownItem
-                                as="span"
-                                @click="updatePerPage(pagination)"
-                            >
-                                {{
-                                    $trans("pagination.list_per_page", {
-                                        attribute: pagination,
-                                    })
-                                }}
+                            <DropdownItem as="span" @click="updatePerPage(pagination)">
+                                {{ $trans("pagination.list_per_page", { attribute: pagination }) }}
                             </DropdownItem>
                         </template>
                     </div>
                 </DropdownButton>
 
                 <div v-if="meta.lastPage >= 1">
-                    <nav
-                        class="relative z-0 inline-flex -space-x-px rounded-md shadow-sm"
-                        aria-label="Pagination"
-                    >
-                        <span
-                            v-if="currentPage <= 1"
-                            class="dark:bg-dark-header relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 dark:border-gray-700"
-                        >
-                            <span class="sr-only">{{
-                                $trans("pagination.previous")
-                            }}</span>
-                            <ChevronLeftIcon
-                                class="h-5 w-5"
-                                aria-hidden="true"
-                            />
+                    <nav class="relative z-0 inline-flex items-center gap-2" aria-label="Pagination">
+                        <!-- Prev -->
+                        <span v-if="currentPage <= 1" class="relative inline-flex items-center justify-center h-9 w-9 rounded-full
+                     ring-1 ring-black/5 dark:ring-white/10 bg-gray-100 dark:bg-neutral-800
+                     text-gray-400 cursor-not-allowed">
+                            <span class="sr-only">{{ $trans("pagination.previous") }}</span>
+                            <ChevronLeftIcon class="h-5 w-5" aria-hidden="true" />
                         </span>
-                        <a
-                            v-else
-                            @click="updateCurrentPage(currentPage - 1)"
-                            href="#"
-                            class="dark:bg-dark-header relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 dark:border-gray-700"
-                        >
-                            <span class="sr-only">{{
-                                $trans("pagination.previous")
-                            }}</span>
-                            <ChevronLeftIcon
-                                class="h-5 w-5"
-                                aria-hidden="true"
-                            />
+                        <a v-else @click="updateCurrentPage(currentPage - 1)" href="#" class="relative inline-flex items-center justify-center h-9 w-9 rounded-full
+                     ring-1 ring-black/5 dark:ring-white/10 bg-white dark:bg-neutral-900
+                     hover:bg-gradient-to-r hover:from-blue-50 hover:via-blue-50 hover:to-blue-50 transition">
+                            <span class="sr-only">{{ $trans("pagination.previous") }}</span>
+                            <ChevronLeftIcon class="h-5 w-5" aria-hidden="true" />
                         </a>
-                        <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white dark:bg-dark-header border-gray-300 dark:border-gray-700 text-gray-500 hover:bg-gray-50" -->
+
+                        <!-- Pages -->
                         <template v-for="(page, key) in pageRange">
-                            <a
-                                href="#"
-                                v-if="page != '...'"
-                                @click="updateCurrentPage(page)"
-                                aria-current="page"
-                                class="relative inline-flex items-center border px-4 py-2 text-sm font-medium"
-                                :class="{
-                                    'bg-primary dark:bg-dark-body border-primary text-secondary z-10 dark:border-gray-700':
-                                        page == currentPage,
-                                    'dark:bg-dark-header dark:hover:bg-dark-body border-gray-300 bg-white text-gray-500 hover:bg-gray-50 dark:border-gray-700':
-                                        page != currentPage,
-                                }"
-                            >
+                            <a href="#" v-if="page != '...'" @click="updateCurrentPage(page)" aria-current="page" class="relative inline-flex items-center justify-center h-9 min-w-9 px-3 rounded-full text-sm font-medium
+                       ring-1 ring-black/5 dark:ring-white/10 transition" :class="{
+                        'bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-white shadow':
+                            page == currentPage,
+                        'bg-white dark:bg-neutral-900 text-gray-700 dark:text-gray-200 hover:bg-gradient-to-r hover:from-blue-50 hover:via-blue-50 hover:to-blue-50':
+                            page != currentPage,
+                    }">
                                 {{ page }}
                             </a>
-                            <span
-                                v-else
-                                aria-current="page"
-                                class="dark:bg-dark-header relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 dark:border-gray-700"
-                            >
+
+                            <span v-else aria-current="page" class="relative inline-flex items-center justify-center h-9 min-w-9 px-3 rounded-full text-sm font-medium
+                       ring-1 ring-black/5 dark:ring-white/10 bg-white dark:bg-neutral-900 text-gray-500">
                                 {{ page }}
                             </span>
                         </template>
-                        <span
-                            v-if="currentPage >= meta.lastPage"
-                            class="dark:bg-dark-header relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 dark:border-gray-700"
-                        >
-                            <span class="sr-only">{{
-                                $trans("pagination.next")
-                            }}</span>
-                            <ChevronRightIcon
-                                class="h-5 w-5"
-                                aria-hidden="true"
-                            />
+
+                        <!-- Next -->
+                        <span v-if="currentPage >= meta.lastPage" class="relative inline-flex items-center justify-center h-9 w-9 rounded-full
+                     ring-1 ring-black/5 dark:ring-white/10 bg-gray-100 dark:bg-neutral-800
+                     text-gray-400 cursor-not-allowed">
+                            <span class="sr-only">{{ $trans("pagination.next") }}</span>
+                            <ChevronRightIcon class="h-5 w-5" aria-hidden="true" />
                         </span>
-                        <a
-                            v-else
-                            @click="updateCurrentPage(+currentPage + 1)"
-                            href="#"
-                            class="dark:bg-dark-header relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 dark:border-gray-700"
-                        >
-                            <span class="sr-only">{{
-                                $trans("pagination.next")
-                            }}</span>
-                            <ChevronRightIcon
-                                class="h-5 w-5"
-                                aria-hidden="true"
-                            />
+                        <a v-else @click="updateCurrentPage(+currentPage + 1)" href="#" class="relative inline-flex items-center justify-center h-9 w-9 rounded-full
+                     ring-1 ring-black/5 dark:ring-white/10 bg-white dark:bg-neutral-900
+                     hover:bg-gradient-to-r hover:from-blue-50 hover:via-blue-50 hover:to-blue-50 transition">
+                            <span class="sr-only">{{ $trans("pagination.next") }}</span>
+                            <ChevronRightIcon class="h-5 w-5" aria-hidden="true" />
                         </a>
                     </nav>
                 </div>
@@ -172,6 +112,8 @@
         </div>
     </div>
 </template>
+
+
 
 <script setup>
 import { ref, computed, watch } from "vue"

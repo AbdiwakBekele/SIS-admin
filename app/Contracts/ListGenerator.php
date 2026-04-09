@@ -10,7 +10,7 @@ abstract class ListGenerator extends PaginationHelper
 {
     protected $actionHeader = [
         'key' => 'action',
-        'label' => '',
+        'label' => 'Action',
         'sortable' => false,
         'visibility' => true,
     ];

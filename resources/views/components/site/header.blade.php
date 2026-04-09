@@ -3,7 +3,8 @@
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
       <a href="/" class="logo d-flex align-items-center">
-        <img src="{{config('config.assets.logo')}}" alt="">
+        <img src="{{ config('config.assets.favicon') }}" alt="Lighthouseducation favicon">
+        <span>Lighthouseducation</span>
       </a>
 
       <nav id="navbar" class="navbar">

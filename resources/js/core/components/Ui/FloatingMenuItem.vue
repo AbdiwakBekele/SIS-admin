@@ -18,8 +18,7 @@
         >
             <i
                 v-if="icon"
-                :class="icon"
-                class="mr-3 text-gray-400 group-hover:text-gray-500"
+                :class="[icon, 'mr-3 transition-colors', iconColorClass]"
                 aria-hidden="true"
             ></i>
             <slot></slot>
@@ -73,5 +72,32 @@ const getComponent = computed(() => {
     } else {
         return "span"
     }
+})
+
+const iconColorClass = computed(() => {
+    if (!props.icon) {
+        return "text-gray-400 group-hover:text-gray-500"
+    }
+
+    if (
+        props.icon.includes("fa-eye") ||
+        props.icon.includes("fa-arrow-circle-right")
+    ) {
+        return "text-blue-500 group-hover:text-blue-600"
+    }
+
+    if (props.icon.includes("fa-edit")) {
+        return "text-slate-600 group-hover:text-slate-700"
+    }
+
+    if (props.icon.includes("fa-copy")) {
+        return "text-green-500 group-hover:text-green-600"
+    }
+
+    if (props.icon.includes("fa-trash")) {
+        return "text-red-500 group-hover:text-red-600"
+    }
+
+    return "text-gray-400 group-hover:text-gray-500"
 })
 </script>

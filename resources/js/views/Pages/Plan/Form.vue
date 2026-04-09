@@ -34,63 +34,10 @@
             <div class="col-span-3 sm:col-span-1">
                 <BaseInput
                     type="number"
-                    v-model="form.maxTeamLimit"
-                    name="maxTeamLimit"
-                    :label="$trans('plan.props.max_team_limit')"
-                    v-model:error="formErrors.maxTeamLimit"
-                />
-            </div>
-            <div class="col-span-3 sm:col-span-1">
-                <BaseInput
-                    type="number"
-                    v-model="form.maxUserLimit"
-                    name="maxUserLimit"
-                    :label="$trans('plan.props.max_user_limit')"
-                    v-model:error="formErrors.maxUserLimit"
-                />
-            </div>
-            <div class="col-span-3 sm:col-span-1">
-                <BaseSwitch
-                    vertical
-                    v-model="form.teamWiseLimit"
-                    name="teamWiseLimit"
-                    :label="$trans('plan.props.team_wise_limit')"
-                />
-            </div>
-            <div class="col-span-3 sm:col-span-1" v-if="form.teamWiseLimit">
-                <BaseInput
-                    type="number"
-                    v-model="form.maxStudentPerTeamLimit"
-                    name="maxStudentPerTeamLimit"
-                    :label="$trans('plan.props.max_student_per_team_limit')"
-                    v-model:error="formErrors.maxStudentPerTeamLimit"
-                />
-            </div>
-            <div class="col-span-3 sm:col-span-1" v-if="!form.teamWiseLimit">
-                <BaseInput
-                    type="number"
                     v-model="form.maxStudentLimit"
                     name="maxStudentLimit"
                     :label="$trans('plan.props.max_student_limit')"
                     v-model:error="formErrors.maxStudentLimit"
-                />
-            </div>
-            <div class="col-span-3 sm:col-span-1" v-if="form.teamWiseLimit">
-                <BaseInput
-                    type="number"
-                    v-model="form.maxEmployeePerTeamLimit"
-                    name="maxEmployeePerTeamLimit"
-                    :label="$trans('plan.props.max_employee_per_team_limit')"
-                    v-model:error="formErrors.maxEmployeePerTeamLimit"
-                />
-            </div>
-            <div class="col-span-3 sm:col-span-1" v-if="!form.teamWiseLimit">
-                <BaseInput
-                    type="number"
-                    v-model="form.maxEmployeeLimit"
-                    name="maxEmployeeLimit"
-                    :label="$trans('plan.props.max_employee_limit')"
-                    v-model:error="formErrors.maxEmployeeLimit"
                 />
             </div>
             <!-- <div class="col-span-3 sm:col-span-1">
@@ -376,11 +323,14 @@ export default {
 </script>
 
 <script setup>
-import { reactive, inject, onMounted } from "vue"
+import { reactive, inject, watch } from "vue"
 import { getConfig, getFormErrors } from "@core/helpers/action"
 import { cloneDeep } from "@core/utils"
 
 const $trans = inject("$trans")
+
+/** Plans are differentiated by student capacity; other limits stay hidden. */
+const PLAN_CREATE_HIDDEN_LIMIT_DEFAULT = 100000
 
 const initForm = {
     name: "",
@@ -422,38 +372,69 @@ const preRequisites = reactive({
 
 const form = reactive({ ...initForm })
 
+const currenciesConfig = getConfig("system.currencies")
+
+const applyStudentTierDefaults = () => {
+    const hiddenDefaults = {
+        maxTeamLimit: PLAN_CREATE_HIDDEN_LIMIT_DEFAULT,
+        maxUserLimit: PLAN_CREATE_HIDDEN_LIMIT_DEFAULT,
+        maxEmployeeLimit: PLAN_CREATE_HIDDEN_LIMIT_DEFAULT,
+        teamWiseLimit: false,
+        maxStudentPerTeamLimit: "",
+        maxEmployeePerTeamLimit: "",
+    }
+    Object.assign(initForm, hiddenDefaults)
+    Object.assign(form, hiddenDefaults)
+}
+
+/**
+ * Config may load after mount; `system.currencies` is undefined until then.
+ * Only seed empty price/activation rows so edit/duplicate `setForm` data is never overwritten.
+ */
+watch(
+    currenciesConfig,
+    (currencies) => {
+        if (!Array.isArray(currencies) || currencies.length === 0) {
+            return
+        }
+        if (initForm.price.length > 0) {
+            return
+        }
+
+        currencies.forEach((currency) => {
+            initForm.price.push({
+                frequency: {
+                    value: "monthly",
+                    label: $trans("plan.frequencies.monthly"),
+                },
+                currency: currency,
+                amount: { value: 0 },
+            })
+
+            initForm.price.push({
+                frequency: {
+                    value: "annually",
+                    label: $trans("plan.frequencies.annually"),
+                },
+                currency: currency,
+                amount: { value: 0 },
+            })
+
+            initForm.activationCharge.push({
+                currency: currency,
+                amount: { value: 0 },
+            })
+        })
+
+        Object.assign(form, cloneDeep(initForm))
+        applyStudentTierDefaults()
+    },
+    { immediate: true }
+)
+
 const setPreRequisites = (data) => {
     Object.assign(preRequisites, data)
 }
-
-onMounted(() => {
-    getConfig("system.currencies").value.forEach((currency) => {
-        initForm.price.push({
-            frequency: {
-                value: "monthly",
-                label: $trans("plan.frequencies.monthly"),
-            },
-            currency: currency,
-            amount: { value: 0 },
-        })
-
-        initForm.price.push({
-            frequency: {
-                value: "annually",
-                label: $trans("plan.frequencies.annually"),
-            },
-            currency: currency,
-            amount: { value: 0 },
-        })
-
-        initForm.activationCharge.push({
-            currency: currency,
-            amount: { value: 0 },
-        })
-    })
-
-    Object.assign(form, cloneDeep(initForm))
-})
 
 const setForm = (data) => {
     Object.assign(initForm, {
@@ -461,5 +442,6 @@ const setForm = (data) => {
         taxRate: data.taxRate?.value || "",
     })
     Object.assign(form, cloneDeep(initForm))
+    applyStudentTierDefaults()
 }
 </script>

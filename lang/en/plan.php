@@ -23,7 +23,7 @@ return [
         'amount' => 'Amount',
         'frequency' => 'Frequency',
         'allow_using_global_mail_service' => 'Allow using Global Mail Service',
-        'max_student_limit' => 'Max Student Limit',
+        'max_student_limit' => 'Student Capacity',
         'max_employee_limit' => 'Max Employee Limit',
         'max_team_limit' => 'Max Team Limit',
         'team_wise_limit' => 'Team wise Limit',

@@ -7,7 +7,7 @@
             @change="updateInput"
             type="checkbox"
             :disabled="disabled"
-            class="text-primary dark:text-dark-body border-primary h-4 w-4 rounded focus:ring-0 dark:border-gray-700"
+            class="h-4 w-4 rounded border-blue-500 text-blue-600 focus:ring-0 dark:border-blue-400 dark:text-blue-300"
             :class="{
                 'cursor-pointer': !disabled,
                 'text-gray-400 dark:text-gray-500': disabled,
@@ -15,7 +15,7 @@
         />
         <label
             :for="state.uniqueId"
-            class="ml-2 block text-sm text-gray-900 dark:text-gray-400"
+            class="ml-2 block text-sm text-slate-900 dark:text-gray-300"
             :class="{
                 'cursor-pointer': !disabled,
             }"

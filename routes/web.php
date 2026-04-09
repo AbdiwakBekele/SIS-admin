@@ -49,6 +49,8 @@ Route::get('/my-ip', function () {
     ];
 });
 
+Route::redirect('/', '/app/login');
+
 // app route
 Route::redirect('/app', '/app/login');
 

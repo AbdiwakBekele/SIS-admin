@@ -1,7 +1,7 @@
 <template>
     <Menu as="div" class="relative flex items-center justify-end">
         <MenuButton
-            class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
             <span class="sr-only">Open options</span>
             <EllipsisVerticalIcon class="h-5 w-5" aria-hidden="true" />

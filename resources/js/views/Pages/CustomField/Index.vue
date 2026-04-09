@@ -39,6 +39,12 @@
                 <DataRow
                     v-for="customField in customFields.data"
                     :key="customField.uuid"
+                    @doubleClick="
+                        router.push({
+                            name: 'CustomFieldShow',
+                            params: { uuid: customField.uuid },
+                        })
+                    "
                 >
                     <DataCell name="form">
                         {{ customField.form.label }}
@@ -46,8 +52,19 @@
                     <DataCell name="type">
                         {{ customField.type.label }}
                     </DataCell>
-                    <DataCell name="label">
-                        {{ customField.label }}
+                    <DataCell
+                        name="label"
+                        clickable
+                        @click="
+                            router.push({
+                                name: 'CustomFieldShow',
+                                params: { uuid: customField.uuid },
+                            })
+                        "
+                    >
+                        <span class="font-medium text-blue-700 hover:underline">
+                            {{ customField.label }}
+                        </span>
                         <BaseBadge
                             v-if="customField.isRequired"
                             design="primary"
@@ -59,52 +76,60 @@
                     <DataCell name="createdAt">
                         {{ customField.createdAt.formatted }}
                     </DataCell>
-                    <DataCell name="action">
-                        <FloatingMenu>
-                            <FloatingMenuItem
-                                icon="fas fa-arrow-circle-right"
+                    <DataCell name="action" align="center">
+                        <div class="flex items-center justify-center gap-3 text-sm">
+                            <button
+                                type="button"
+                                class="text-blue-500 hover:text-blue-600"
+                                v-tooltip="$trans('general.show')"
                                 @click="
                                     router.push({
                                         name: 'CustomFieldShow',
                                         params: { uuid: customField.uuid },
                                     })
                                 "
-                                >{{ $trans("general.show") }}</FloatingMenuItem
                             >
-                            <FloatingMenuItem
-                                icon="fas fa-edit"
+                                <i class="fas fa-eye text-[12px]"></i>
+                            </button>
+                            <button
+                                type="button"
+                                class="text-slate-600 hover:text-slate-700"
+                                v-tooltip="$trans('general.edit')"
                                 @click="
                                     router.push({
                                         name: 'CustomFieldEdit',
                                         params: { uuid: customField.uuid },
                                     })
                                 "
-                                >{{ $trans("general.edit") }}</FloatingMenuItem
                             >
-                            <FloatingMenuItem
-                                icon="fas fa-copy"
+                                <i class="fas fa-edit text-[12px]"></i>
+                            </button>
+                            <button
+                                type="button"
+                                class="text-green-500 hover:text-green-600"
+                                v-tooltip="$trans('general.duplicate')"
                                 @click="
                                     router.push({
                                         name: 'CustomFieldDuplicate',
                                         params: { uuid: customField.uuid },
                                     })
                                 "
-                                >{{
-                                    $trans("general.duplicate")
-                                }}</FloatingMenuItem
                             >
-                            <FloatingMenuItem
-                                icon="fas fa-trash"
+                                <i class="fas fa-copy text-[12px]"></i>
+                            </button>
+                            <button
+                                type="button"
+                                class="text-red-500 hover:text-red-600"
+                                v-tooltip="$trans('general.delete')"
                                 @click="
                                     emitter.emit('deleteItem', {
                                         uuid: customField.uuid,
                                     })
                                 "
-                                >{{
-                                    $trans("general.delete")
-                                }}</FloatingMenuItem
                             >
-                        </FloatingMenu>
+                                <i class="fas fa-trash text-[12px]"></i>
+                            </button>
+                        </div>
                     </DataCell>
                 </DataRow>
                 <template #actionButton>

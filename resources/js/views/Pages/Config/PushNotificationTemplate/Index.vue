@@ -29,9 +29,16 @@
                     <DataRow
                         v-for="pushNotificationTemplate in pushNotificationTemplates.data"
                         :key="pushNotificationTemplate.uuid"
+                        @doubleClick="showDetail(pushNotificationTemplate)"
                     >
-                        <DataCell name="name">
-                            {{ pushNotificationTemplate.name }}
+                        <DataCell
+                            name="name"
+                            clickable
+                            @click="showDetail(pushNotificationTemplate)"
+                        >
+                            <span class="font-medium text-blue-700 hover:underline">
+                                {{ pushNotificationTemplate.name }}
+                            </span>
                             <BaseBadge
                                 v-if="!pushNotificationTemplate.enabledAt.value"
                                 design="danger"

@@ -91,7 +91,16 @@
                 module="utility.todo"
                 @refresh="emitter.emit('listItems')"
             >
-                <DataRow v-for="todo in todos.data" :key="todo.uuid">
+                <DataRow
+                    v-for="todo in todos.data"
+                    :key="todo.uuid"
+                    @doubleClick="
+                        router.push({
+                            name: 'UtilityTodoShow',
+                            params: { uuid: todo.uuid },
+                        })
+                    "
+                >
                     <DataCell name="selectAll">
                         <BaseArrayCheckbox
                             v-if="!selected.global"
@@ -103,8 +112,19 @@
                             v-model="selected.global"
                         />
                     </DataCell>
-                    <DataCell name="title">
-                        {{ todo.title }}
+                    <DataCell
+                        name="title"
+                        clickable
+                        @click="
+                            router.push({
+                                name: 'UtilityTodoShow',
+                                params: { uuid: todo.uuid },
+                            })
+                        "
+                    >
+                        <span class="font-medium text-blue-700 hover:underline">
+                            {{ todo.title }}
+                        </span>
                     </DataCell>
                     <DataCell name="due">
                         {{ todo.due.formatted }}

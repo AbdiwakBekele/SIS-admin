@@ -433,7 +433,7 @@ name('site.index');
                     </div>
 
                     <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
-                        <div class="service-box purple">
+                        <div class="service-box blue">
                             <i class="ri-discuss-line icon"></i>
                             <h3>Velit Doloremque.</h3>
                             <p>Cumque et suscipit saepe. Est maiores autem enim facilis ut aut ipsam corporis aut. Sed

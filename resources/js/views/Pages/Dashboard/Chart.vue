@@ -1,25 +1,57 @@
 <template>
-    <BaseFlexCard class="md:w-1/3" :is-loading="isLoading">
-        <template #title>{{ $trans("dashboard.status_wise_tenant") }}</template>
-        <div>
-            <Doughnut
-                :data="state.statusWiseData"
-                :options="options"
-                v-if="state.statusWiseData?.labels"
-            />
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+        <div class="overflow-hidden rounded-[28px] bg-white shadow-lg ring-1 ring-slate-200/70 dark:bg-neutral-800 dark:ring-white/10">
+            <div class="relative overflow-hidden bg-gradient-to-br from-emerald-800 to-emerald-500 px-6 py-5 text-white">
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-white/10"></div>
+                <div class="relative flex items-start justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/20 backdrop-blur">
+                            <i class="fa-solid fa-chart-pie text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-100/85">
+                                Status
+                            </p>
+                            <h2 class="mt-1 text-xl font-semibold">{{ $trans("dashboard.status_wise_tenant") }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4">
+                <Doughnut
+                    :data="state.statusWiseData"
+                    :options="options"
+                    v-if="state.statusWiseData?.labels"
+                />
+            </div>
         </div>
-    </BaseFlexCard>
 
-    <BaseFlexCard class="md:w-1/3" :is-loading="isLoading">
-        <template #title>{{ $trans("dashboard.plan_wise_tenant") }}</template>
-        <div>
-            <Doughnut
-                :data="state.planWiseData"
-                :options="options"
-                v-if="state.planWiseData?.labels"
-            />
+        <div class="overflow-hidden rounded-[28px] bg-white shadow-lg ring-1 ring-slate-200/70 dark:bg-neutral-800 dark:ring-white/10">
+            <div class="relative overflow-hidden bg-gradient-to-br from-amber-700 to-amber-400 px-6 py-5 text-white">
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-white/10"></div>
+                <div class="relative flex items-start justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/20 backdrop-blur">
+                            <i class="fa-solid fa-layer-group text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-amber-100/85">
+                                Plans
+                            </p>
+                            <h2 class="mt-1 text-xl font-semibold">{{ $trans("dashboard.plan_wise_tenant") }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4">
+                <Doughnut
+                    :data="state.planWiseData"
+                    :options="options"
+                    v-if="state.planWiseData?.labels"
+                />
+            </div>
         </div>
-    </BaseFlexCard>
+    </div>
 </template>
 
 <script>

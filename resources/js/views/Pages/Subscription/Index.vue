@@ -32,9 +32,26 @@
                 <DataRow
                     v-for="subscription in subscriptions.data"
                     :key="subscription.uuid"
+                    @doubleClick="
+                        router.push({
+                            name: 'SubscriptionShow',
+                            params: { uuid: subscription.uuid },
+                        })
+                    "
                 >
-                    <DataCell name="codeNumber">
-                        {{ subscription.codeNumber }}
+                    <DataCell
+                        name="codeNumber"
+                        clickable
+                        @click="
+                            router.push({
+                                name: 'SubscriptionShow',
+                                params: { uuid: subscription.uuid },
+                            })
+                        "
+                    >
+                        <span class="font-medium text-blue-700 hover:underline">
+                            {{ subscription.codeNumber }}
+                        </span>
                         <BaseBadge design="error" v-if="!subscription.status">{{
                             subscription.statusDisplay
                         }}</BaseBadge>
@@ -62,52 +79,64 @@
                     <DataCell name="date">
                         {{ subscription.createdAt.formatted }}
                     </DataCell>
-                    <DataCell name="action">
-                        <FloatingMenu>
-                            <FloatingMenuItem
-                                as="link"
-                                v-if="subscription.status"
-                                icon="fas fa-print"
-                                target="_blank"
-                                :href="`/subscriptions/${subscription.uuid}/print`"
-                                >{{
-                                    $trans("global.print", {
-                                        attribute: $trans(
-                                            "subscription.subscription"
-                                        ),
+                    <DataCell name="action" align="center">
+                        <div class="flex items-center justify-center gap-3 text-sm">
+                            <button
+                                type="button"
+                                class="text-blue-500 hover:text-blue-600"
+                                v-tooltip="$trans('general.show')"
+                                @click="
+                                    router.push({
+                                        name: 'SubscriptionShow',
+                                        params: { uuid: subscription.uuid },
                                     })
-                                }}</FloatingMenuItem
+                                "
                             >
-                            <FloatingMenuItem
+                                <i class="fas fa-eye text-[12px]"></i>
+                            </button>
+                            <a
+                                v-if="subscription.status"
+                                :href="`/subscriptions/${subscription.uuid}/print`"
+                                target="_blank"
+                                class="text-slate-600 hover:text-slate-700"
+                                v-tooltip="$trans('global.print', { attribute: $trans('subscription.subscription') })"
+                            >
+                                <i class="fas fa-print text-[12px]"></i>
+                            </a>
+                            <button
                                 v-if="
                                     perform('subscription:edit') &&
                                     !subscription.isOnline
                                 "
-                                icon="fas fa-edit"
+                                type="button"
+                                class="text-blue-500 hover:text-blue-600"
+                                v-tooltip="$trans('general.edit')"
                                 @click="
                                     router.push({
                                         name: 'SubscriptionEdit',
                                         params: { uuid: subscription.uuid },
                                     })
                                 "
-                                >{{ $trans("general.edit") }}</FloatingMenuItem
                             >
-                            <FloatingMenuItem
+                                <i class="fas fa-edit text-[12px]"></i>
+                            </button>
+                            <button
                                 v-if="
                                     perform('subscription:delete') &&
                                     !subscription.isOnline
                                 "
-                                icon="fas fa-trash"
+                                type="button"
+                                class="text-red-500 hover:text-red-600"
+                                v-tooltip="$trans('general.delete')"
                                 @click="
                                     emitter.emit('deleteItem', {
                                         uuid: subscription.uuid,
                                     })
                                 "
-                                >{{
-                                    $trans("general.delete")
-                                }}</FloatingMenuItem
                             >
-                        </FloatingMenu>
+                                <i class="fas fa-trash text-[12px]"></i>
+                            </button>
+                        </div>
                     </DataCell>
                 </DataRow>
                 <template #actionButton>

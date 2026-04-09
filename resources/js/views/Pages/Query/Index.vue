@@ -29,9 +29,29 @@
                 module="query"
                 @refresh="emitter.emit('listItems')"
             >
-                <DataRow v-for="query in queries.data" :key="query.uuid">
-                    <DataCell name="name">
-                        {{ query.name }}
+                <DataRow
+                    v-for="query in queries.data"
+                    :key="query.uuid"
+                    @doubleClick="
+                        router.push({
+                            name: 'QueryShow',
+                            params: { uuid: query.uuid },
+                        })
+                    "
+                >
+                    <DataCell
+                        name="name"
+                        clickable
+                        @click="
+                            router.push({
+                                name: 'QueryShow',
+                                params: { uuid: query.uuid },
+                            })
+                        "
+                    >
+                        <span class="font-medium text-blue-700 hover:underline">
+                            {{ query.name }}
+                        </span>
                     </DataCell>
                     <DataCell name="email">
                         {{ query.email }}

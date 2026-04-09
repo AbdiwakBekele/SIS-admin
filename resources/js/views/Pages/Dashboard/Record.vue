@@ -1,13 +1,8 @@
 <template>
-    <BaseFlexContainer class="mt-4 px-4">
-        <BaseFlexCard class="md:w-1/2">
-            <TenantRecord :records="records.tenants" />
-        </BaseFlexCard>
-
-        <BaseFlexCard class="md:w-1/2">
-            <SubscriptionRecord :records="records.subscriptions" />
-        </BaseFlexCard>
-    </BaseFlexContainer>
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+        <TenantRecord :records="records.tenants || []" />
+        <SubscriptionRecord :records="records.subscriptions || []" />
+    </div>
 </template>
 
 <script>
@@ -36,7 +31,7 @@ onMounted(async () => {
             isLoading.value = false
             Object.assign(records, response)
         })
-        .catch((e) => {
+        .catch(() => {
             isLoading.value = false
         })
 })

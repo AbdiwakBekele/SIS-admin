@@ -1,1 +1,0 @@
-import{q as a,s,r as o,o as c,e as i}from"./app-CD9e_qFT.js";const r={name:"SubscriptionConfig"},p=Object.assign(r,{setup(_){const e=[{name:"SubscriptionConfigGeneral",icon:"fas fa-cogs",label:"config.config"}];return(f,u)=>{const n=o("router-view"),t=o("ModuleConfig");return c(),a(t,{navigations:e},{default:s(()=>[i(n)]),_:1})}}});export{p as default};

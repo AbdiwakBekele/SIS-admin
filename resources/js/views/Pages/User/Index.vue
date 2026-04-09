@@ -35,9 +35,29 @@
                 module="user"
                 @refresh="emitter.emit('listItems')"
             >
-                <DataRow v-for="user in users.data" :key="user.uuid">
-                    <DataCell name="name">
-                        {{ user.profile.name }}
+                <DataRow
+                    v-for="user in users.data"
+                    :key="user.uuid"
+                    @doubleClick="
+                        router.push({
+                            name: 'UserShow',
+                            params: { uuid: user.uuid },
+                        })
+                    "
+                >
+                    <DataCell
+                        name="name"
+                        clickable
+                        @click="
+                            router.push({
+                                name: 'UserShow',
+                                params: { uuid: user.uuid },
+                            })
+                        "
+                    >
+                        <span class="font-medium text-blue-700 hover:underline">
+                            {{ user.profile.name }}
+                        </span>
                     </DataCell>
                     <DataCell name="email">
                         {{ user.email }}
@@ -59,56 +79,65 @@
                     <DataCell name="createdAt">
                         {{ user.createdAt.formatted }}
                     </DataCell>
-                    <DataCell name="action">
-                        <FloatingMenu
+                    <DataCell name="action" align="center">
+                        <div
                             v-if="
                                 user.isEditable ||
                                 user.isDeletable ||
                                 perform('user:impersonate')
                             "
+                            class="flex items-center justify-center gap-3 text-sm"
                         >
-                            <FloatingMenuItem
+                            <button
                                 v-if="perform('user:impersonate')"
-                                icon="fas fa-key"
+                                type="button"
+                                class="text-slate-600 hover:text-slate-700"
+                                v-tooltip="$trans('user.impersonate')"
                                 @click="impersonate(user.uuid)"
-                                >{{
-                                    $trans("user.impersonate")
-                                }}</FloatingMenuItem
                             >
-                            <FloatingMenuItem
-                                icon="fas fa-eye"
+                                <i class="fas fa-key text-[12px]"></i>
+                            </button>
+                            <button
+                                type="button"
+                                class="text-slate-600 hover:text-slate-700"
+                                v-tooltip="$trans('general.show')"
                                 @click="
                                     router.push({
                                         name: 'UserShow',
                                         params: { uuid: user.uuid },
                                     })
                                 "
-                                >{{ $trans("general.show") }}</FloatingMenuItem
                             >
-                            <FloatingMenuItem
-                                icon="fas fa-edit"
+                                <i class="fas fa-eye text-[12px]"></i>
+                            </button>
+                            <button
                                 v-if="user.isEditable"
+                                type="button"
+                                class="text-blue-500 hover:text-blue-600"
+                                v-tooltip="$trans('general.edit')"
                                 @click="
                                     router.push({
                                         name: 'UserEdit',
                                         params: { uuid: user.uuid },
                                     })
                                 "
-                                >{{ $trans("general.edit") }}</FloatingMenuItem
                             >
-                            <FloatingMenuItem
-                                icon="fas fa-trash"
+                                <i class="fas fa-edit text-[12px]"></i>
+                            </button>
+                            <button
                                 v-if="user.isDeletable"
+                                type="button"
+                                class="text-red-500 hover:text-red-600"
+                                v-tooltip="$trans('general.delete')"
                                 @click="
                                     emitter.emit('deleteItem', {
                                         uuid: user.uuid,
                                     })
                                 "
-                                >{{
-                                    $trans("general.delete")
-                                }}</FloatingMenuItem
                             >
-                        </FloatingMenu>
+                                <i class="fas fa-trash text-[12px]"></i>
+                            </button>
+                        </div>
                     </DataCell>
                 </DataRow>
                 <template #actionButton>

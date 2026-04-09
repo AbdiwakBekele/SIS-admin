@@ -29,9 +29,29 @@
                 module="tenant"
                 @refresh="emitter.emit('listItems')"
             >
-                <DataRow v-for="tenant in tenants.data" :key="tenant.uuid">
-                    <DataCell name="name">
-                        {{ tenant.name }}
+                <DataRow
+                    v-for="tenant in tenants.data"
+                    :key="tenant.uuid"
+                    @doubleClick="
+                        router.push({
+                            name: 'TenantShow',
+                            params: { uuid: tenant.uuid },
+                        })
+                    "
+                >
+                    <DataCell
+                        name="name"
+                        clickable
+                        @click="
+                            router.push({
+                                name: 'TenantShow',
+                                params: { uuid: tenant.uuid },
+                            })
+                        "
+                    >
+                        <span class="font-medium text-blue-700 hover:underline">
+                            {{ tenant.name }}
+                        </span>
                         <BaseBadge
                             v-if="tenant.isTrial"
                             :label="$trans('tenant.props.trial')"
@@ -62,65 +82,72 @@
                     <DataCell name="createdAt">
                         {{ tenant.createdAt.formatted }}
                     </DataCell>
-                    <DataCell name="action">
-                        <FloatingMenu>
-                            <FloatingMenuItem
+                    <DataCell name="action" align="center">
+                        <div class="flex items-center justify-center gap-3 text-sm">
+                            <a
                                 v-if="perform('tenant:login')"
-                                icon="fas fa-arrow-circle-right"
-                                as="link"
                                 :href="tenant.loginUrl"
                                 target="_blank"
-                                >{{
-                                    $trans("auth.login.login")
-                                }}</FloatingMenuItem
+                                class="text-slate-600 hover:text-slate-700"
+                                v-tooltip="$trans('auth.login.login')"
                             >
-                            <FloatingMenuItem
-                                icon="fas fa-arrow-circle-right"
+                                <i class="fas fa-arrow-circle-right text-[12px]"></i>
+                            </a>
+                            <button
+                                type="button"
+                                class="text-blue-500 hover:text-blue-600"
+                                v-tooltip="$trans('general.show')"
                                 @click="
                                     router.push({
                                         name: 'TenantShow',
                                         params: { uuid: tenant.uuid },
                                     })
                                 "
-                                >{{ $trans("general.show") }}</FloatingMenuItem
                             >
-                            <FloatingMenuItem
+                                <i class="fas fa-eye text-[12px]"></i>
+                            </button>
+                            <button
                                 v-if="perform('tenant:edit')"
-                                icon="fas fa-edit"
+                                type="button"
+                                class="text-slate-600 hover:text-slate-700"
+                                v-tooltip="$trans('general.edit')"
                                 @click="
                                     router.push({
                                         name: 'TenantEdit',
                                         params: { uuid: tenant.uuid },
                                     })
                                 "
-                                >{{ $trans("general.edit") }}</FloatingMenuItem
                             >
-                            <FloatingMenuItem
+                                <i class="fas fa-edit text-[12px]"></i>
+                            </button>
+                            <button
                                 v-if="perform('tenant:create')"
-                                icon="fas fa-copy"
+                                type="button"
+                                class="text-green-500 hover:text-green-600"
+                                v-tooltip="$trans('general.duplicate')"
                                 @click="
                                     router.push({
                                         name: 'TenantDuplicate',
                                         params: { uuid: tenant.uuid },
                                     })
                                 "
-                                >{{
-                                    $trans("general.duplicate")
-                                }}</FloatingMenuItem
                             >
-                            <FloatingMenuItem
+                                <i class="fas fa-copy text-[12px]"></i>
+                            </button>
+                            <button
                                 v-if="perform('tenant:delete')"
-                                icon="fas fa-trash"
+                                type="button"
+                                class="text-red-500 hover:text-red-600"
+                                v-tooltip="$trans('general.delete')"
                                 @click="
                                     emitter.emit('deleteItem', {
                                         uuid: tenant.uuid,
                                     })
                                 "
-                                >{{
-                                    $trans("general.delete")
-                                }}</FloatingMenuItem
                             >
-                        </FloatingMenu>
+                                <i class="fas fa-trash text-[12px]"></i>
+                            </button>
+                        </div>
                     </DataCell>
                 </DataRow>
                 <template #actionButton>
