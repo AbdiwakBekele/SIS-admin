@@ -164,7 +164,7 @@ return [
     'tags_excluded' => 'Doesn\'t Have Tags',
     'date_between' => 'Date Between',
     'created_by' => 'Created By',
-    'created_at' => 'Created At',
+    'created_at' => 'Created On',
     'updated_at' => 'Last Updated At',
     'imported_at' => 'Imported At',
     'bulk_action' => 'Bulk Action',

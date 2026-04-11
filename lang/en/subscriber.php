@@ -2,6 +2,7 @@
 
 return [
     'subscriber' => 'Subscriber',
+    'inquiries' => 'Inquiries',
     'subscribers' => 'Subscribers',
     'module_title' => 'Manage all Subscribers',
     'module_description' => 'Subscribers are the users wishing to know more about your products.',

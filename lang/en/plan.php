@@ -8,6 +8,7 @@ return [
     'modules' => [],
     'props' => [
         'name' => 'Name',
+        'title' => 'Title',
         'code' => 'Code',
         'active' => 'Active',
         'free' => 'Free',
@@ -23,7 +24,8 @@ return [
         'amount' => 'Amount',
         'frequency' => 'Frequency',
         'allow_using_global_mail_service' => 'Allow using Global Mail Service',
-        'max_student_limit' => 'Student Capacity',
+        'min_student_limit' => 'Min # of students',
+        'max_student_limit' => 'Max # of Students',
         'max_employee_limit' => 'Max Employee Limit',
         'max_team_limit' => 'Max Team Limit',
         'team_wise_limit' => 'Team wise Limit',

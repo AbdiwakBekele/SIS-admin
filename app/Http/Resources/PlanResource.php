@@ -18,6 +18,7 @@ class PlanResource extends JsonResource
     public function toArray($request)
     {
         $modules = $this->getFeature('modules');
+        $teamWiseLimit = filter_var($this->getFeature('team_wise_limit'), FILTER_VALIDATE_BOOLEAN);
 
         $moduleDetails = collect($modules)->map(function ($module) {
             return [
@@ -60,20 +61,15 @@ class PlanResource extends JsonResource
             'allow_using_global_mail_service' => (bool) $this->getFeature('allow_using_global_mail_service'),
             'max_team_limit' => (int) $this->getFeature('max_team_limit'),
             'max_user_limit' => (int) $this->getFeature('max_user_limit'),
-            'team_wise_limit' => (bool) $this->getFeature('team_wise_limit'),
-            $this->mergeWhen($this->getFeature('team_wise_limit'), [
+            'team_wise_limit' => $teamWiseLimit,
+            $this->mergeWhen($teamWiseLimit, [
                 'max_student_per_team_limit' => (int) $this->getFeature('max_student_per_team_limit'),
                 'max_employee_per_team_limit' => (int) $this->getFeature('max_employee_per_team_limit'),
             ]),
-            $this->mergeWhen(! $this->getFeature('team_wise_limit'), [
-                'max_student_limit' => (int) $this->getFeature('max_student_limit'),
-                'max_employee_limit' => (int) $this->getFeature('max_employee_limit'),
-            ]),
-            'enable_tax' => (bool) Arr::get($this->tax, 'is_enabled'),
-            $this->mergeWhen(Arr::get($this->tax, 'is_enabled'), [
-                'tax_label' => Arr::get($this->tax, 'label'),
-                'tax_rate' => \Percent::from(Arr::get($this->tax, 'rate')),
-                'tax_type_exclusive' => (bool) Arr::get($this->tax, 'is_exclusive'),
+            $this->mergeWhen(! $teamWiseLimit, [
+                'min_student_limit' => is_null($this->getFeature('min_student_limit')) ? null : (int) $this->getFeature('min_student_limit'),
+                'max_student_limit' => is_null($this->getFeature('max_student_limit')) ? null : (int) $this->getFeature('max_student_limit'),
+                'max_employee_limit' => is_null($this->getFeature('max_employee_limit')) ? null : (int) $this->getFeature('max_employee_limit'),
             ]),
             'enable_monthly_subscription' => (bool) $this->getMeta('enable_monthly_subscription', true),
             'enable_annual_subscription' => (bool) $this->getMeta('enable_annual_subscription', true),

@@ -39,16 +39,13 @@ class PlanRequest extends FormRequest
             'is_featured' => 'boolean',
             'is_visible' => 'boolean',
             'has_activation_charge' => 'boolean',
-            'enable_tax' => 'boolean',
-            'tax_type_exclusive' => 'boolean',
             'allow_using_global_mail_service' => 'boolean',
             'max_team_limit' => 'int|min:1|max:100000',
             'max_user_limit' => 'int|min:1|max:100000',
             'team_wise_limit' => 'boolean',
-            'tax_label' => 'nullable|required_if:enable_tax,1|string|min:2|max:100',
-            'tax_rate' => 'nullable|required_if:enable_tax,1|numeric|min:0|max:100',
+            'min_student_limit' => 'nullable|int|min:1|max:100000',
             'show_inclusion_exclusion' => 'boolean',
-            'description' => 'required_unless:show_inclusion_exclusion,1|min:10|max:1000',
+            'description' => 'nullable|min:10|max:1000',
             'inclusion' => 'required_if:show_inclusion_exclusion,1|min:10|max:1000',
             'exclusion' => 'required_if:show_inclusion_exclusion,1|min:10|max:1000',
             'price' => 'array',
@@ -57,11 +54,12 @@ class PlanRequest extends FormRequest
             'activation_charge.*.amount.value' => 'numeric|min:0|max:1000000',
         ];
 
-        if ($this->team_wise_limit) {
+        if ($this->boolean('team_wise_limit')) {
             $rules['max_student_per_team_limit'] = 'required|min:1|max:100000';
             $rules['max_employee_per_team_limit'] = 'required|min:1|max:100000';
         } else {
-            $rules['max_student_limit'] = 'required|min:1|max:100000';
+            $rules['min_student_limit'] = 'required|min:1|max:100000|lte:max_student_limit';
+            $rules['max_student_limit'] = 'required|min:1|max:100000|gte:min_student_limit';
             $rules['max_employee_limit'] = 'required|min:1|max:100000';
         }
 
@@ -124,10 +122,9 @@ class PlanRequest extends FormRequest
             'is_featured' => __('global.is_attribute', ['attribute' => __('plan.props.featured')]),
             'is_visible' => __('global.is_attribute', ['attribute' => __('plan.props.visible')]),
             'has_activation_charge' => __('global.has_attribute', ['attribute' => __('plan.props.activation_charge')]),
-            'enable_tax' => __('global.enable', ['attribute' => __('plan.props.tax')]),
-            'tax_type_exclusive' => __('plan.props.tax_type_exclusive'),
             'allow_using_global_mail_service' => __('plan.props.allow_using_global_mail_service'),
             'max_student_limit' => __('plan.props.max_student_limit'),
+            'min_student_limit' => __('plan.props.min_student_limit'),
             'max_employee_limit' => __('plan.props.max_employee_limit'),
             'max_team_limit' => __('plan.props.max_team_limit'),
             'team_wise_limit' => __('plan.props.team_wise_limit'),
@@ -135,8 +132,6 @@ class PlanRequest extends FormRequest
             'max_employee_per_team_limit' => __('plan.props.max_employee_per_team_limit'),
             'max_user_limit' => __('plan.props.max_user_limit'),
             'modules' => __('plan.props.modules'),
-            'tax_label' => __('plan.props.tax_label'),
-            'tax_rate' => __('plan.props.tax_rate'),
             'description' => __('plan.props.description'),
             'show_inclusion_exclusion' => __('plan.props.show_inclusion_exclusion'),
             'inclusion' => __('plan.props.inclusion'),

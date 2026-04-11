@@ -22,7 +22,7 @@ class PlanListService extends ListGenerator
         $headers = [
             [
                 'key' => 'name',
-                'label' => trans('plan.props.name'),
+                'label' => trans('plan.props.title'),
                 'sortable' => true,
                 'visibility' => true,
             ],
@@ -33,15 +33,16 @@ class PlanListService extends ListGenerator
                 'visibility' => true,
             ],
             [
-                'key' => 'maxStudentLimit',
-                'label' => trans('plan.props.max_student_limit'),
-                'print_label' => 'max_student_limit',
+                'key' => 'minStudentLimit',
+                'label' => trans('plan.props.min_student_limit'),
+                'print_label' => 'min_student_limit',
                 'sortable' => false,
                 'visibility' => true,
             ],
             [
-                'key' => 'priceSummary',
-                'label' => trans('plan.props.price'),
+                'key' => 'maxStudentLimit',
+                'label' => trans('plan.props.max_student_limit'),
+                'print_label' => 'max_student_limit',
                 'sortable' => false,
                 'visibility' => true,
             ],
@@ -52,14 +53,8 @@ class PlanListService extends ListGenerator
                 'visibility' => true,
             ],
             [
-                'key' => 'isFree',
-                'label' => trans('plan.props.free'),
-                'sortable' => false,
-                'visibility' => true,
-            ],
-            [
-                'key' => 'isVisible',
-                'label' => trans('plan.props.visible'),
+                'key' => 'priceSummary',
+                'label' => trans('plan.props.price'),
                 'sortable' => false,
                 'visibility' => true,
             ],

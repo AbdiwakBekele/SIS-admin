@@ -4,7 +4,7 @@ export default [
         name: "Subscriber",
         redirect: { name: "SubscriberList" },
         meta: {
-            label: "subscriber.subscriber",
+            label: "subscriber.inquiries",
             icon: "fas fa-rss",
             hideChildren: true,
             permissions: ["subscriber:read"],

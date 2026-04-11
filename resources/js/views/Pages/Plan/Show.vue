@@ -112,20 +112,6 @@
                     </BaseDataView>
 
                     <BaseDataView
-                        :label="$trans('plan.props.tax')"
-                        v-if="!plan.isFree"
-                    >
-                        <span v-if="plan.enableTax">
-                            {{ plan.taxLabel + " " + plan.taxRate.formatted }}
-                            <span v-if="plan.taxTypeExclusive"
-                                >({{
-                                    $trans("plan.props.tax_type_exclusive")
-                                }})</span
-                            >
-                        </span>
-                    </BaseDataView>
-
-                    <BaseDataView
                         :label="$trans('plan.props.activation_charge')"
                         v-if="!plan.isFree"
                     >

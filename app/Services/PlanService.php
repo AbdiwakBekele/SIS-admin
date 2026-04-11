@@ -30,6 +30,8 @@ class PlanService
 
     private function formatParams(Request $request, ?Plan $plan = null): array
     {
+        $isTeamWiseLimit = $request->boolean('team_wise_limit');
+
         $formatted = [
             'name' => $request->name,
             'code' => $request->code,
@@ -47,18 +49,14 @@ class PlanService
                 'allow_using_global_mail_service' => $request->boolean('allow_using_global_mail_service'),
                 'max_team_limit' => (int) $request->max_team_limit,
                 'max_user_limit' => (int) $request->max_user_limit,
-                'team_wise_limit' => $request->team_wise_limit,
-                'max_student_limit' => ! $request->team_wise_limit ? (int) $request->max_student_limit : null,
-                'max_employee_limit' => ! $request->team_wise_limit ? (int) $request->max_employee_limit : null,
-                'max_student_per_team_limit' => $request->team_wise_limit ? (int) $request->max_student_per_team_limit : null,
-                'max_employee_per_team_limit' => $request->team_wise_limit ? (int) $request->max_employee_per_team_limit : null,
+                'team_wise_limit' => $isTeamWiseLimit,
+                'min_student_limit' => ! $isTeamWiseLimit ? (int) $request->min_student_limit : null,
+                'max_student_limit' => ! $isTeamWiseLimit ? (int) $request->max_student_limit : null,
+                'max_employee_limit' => ! $isTeamWiseLimit ? (int) $request->max_employee_limit : null,
+                'max_student_per_team_limit' => $isTeamWiseLimit ? (int) $request->max_student_per_team_limit : null,
+                'max_employee_per_team_limit' => $isTeamWiseLimit ? (int) $request->max_employee_per_team_limit : null,
             ],
-            'tax' => [
-                'is_enabled' => $request->boolean('is_free') ? 0 : $request->boolean('enable_tax'),
-                'label' => $request->tax_label,
-                'rate' => $request->tax_rate,
-                'is_exclusive' => $request->boolean('tax_type_exclusive'),
-            ],
+            'tax' => null,
             'pricing' => [
                 'price' => $request->price,
                 'activation_charge' => $request->activation_charge,

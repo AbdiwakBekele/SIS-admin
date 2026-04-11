@@ -8,18 +8,18 @@
         :set-form="setForm"
         redirect="Plan"
     >
-        <div class="grid grid-cols-3 gap-6">
-            <div class="col-span-3 sm:col-span-1">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+            <div>
                 <BaseInput
                     type="text"
                     v-model="form.name"
                     name="name"
-                    :label="$trans('plan.props.name')"
+                    :label="$trans('plan.props.title')"
                     v-model:error="formErrors.name"
                     autofocus
                 />
             </div>
-            <div class="col-span-3 sm:col-span-1">
+            <div>
                 <BaseInput
                     type="text"
                     v-model="form.code"
@@ -28,10 +28,16 @@
                     v-model:error="formErrors.code"
                 />
             </div>
-        </div>
-
-        <div class="mt-4 grid grid-cols-3 gap-6">
-            <div class="col-span-3 sm:col-span-1">
+            <div>
+                <BaseInput
+                    type="number"
+                    v-model="form.minStudentLimit"
+                    name="minStudentLimit"
+                    :label="$trans('plan.props.min_student_limit')"
+                    v-model:error="formErrors.minStudentLimit"
+                />
+            </div>
+            <div>
                 <BaseInput
                     type="number"
                     v-model="form.maxStudentLimit"
@@ -56,10 +62,9 @@
             </div> -->
         </div>
 
-        <div class="mt-4 grid grid-cols-2 gap-6">
-            <div class="col-span-2 space-y-2 sm:col-span-1">
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="col-span-3 sm:col-span-1">
+        <div class="mt-4">
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                    <div>
                         <BaseSwitch
                             vertical
                             v-model="form.isActive"
@@ -71,7 +76,7 @@
                             "
                         />
                     </div>
-                    <div class="col-span-3 sm:col-span-1">
+                    <div>
                         <BaseSwitch
                             vertical
                             v-model="form.isDefault"
@@ -83,19 +88,7 @@
                             "
                         />
                     </div>
-                    <div class="col-span-3 sm:col-span-1">
-                        <BaseSwitch
-                            vertical
-                            v-model="form.isVisible"
-                            name="isVisible"
-                            :label="
-                                $trans('global.is_attribute', {
-                                    attribute: $trans('plan.props.visible'),
-                                })
-                            "
-                        />
-                    </div>
-                    <div class="col-span-3 sm:col-span-1">
+                    <div>
                         <BaseSwitch
                             vertical
                             v-model="form.isFeatured"
@@ -107,19 +100,7 @@
                             "
                         />
                     </div>
-                    <div class="col-span-3 sm:col-span-1">
-                        <BaseSwitch
-                            vertical
-                            v-model="form.isFree"
-                            name="isFree"
-                            :label="
-                                $trans('global.is_attribute', {
-                                    attribute: $trans('plan.props.free'),
-                                })
-                            "
-                        />
-                    </div>
-                    <div class="col-span-3 sm:col-span-1">
+                    <div>
                         <BaseSwitch
                             vertical
                             v-model="form.hasActivationCharge"
@@ -133,19 +114,7 @@
                             "
                         />
                     </div>
-                    <div class="col-span-3 sm:col-span-1">
-                        <BaseSwitch
-                            vertical
-                            v-model="form.enableTax"
-                            name="enableTax"
-                            :label="
-                                $trans('global.enable', {
-                                    attribute: $trans('plan.props.tax'),
-                                })
-                            "
-                        />
-                    </div>
-                    <div class="col-span-3 sm:col-span-1">
+                    <div>
                         <BaseSwitch
                             vertical
                             v-model="form.enableMonthlySubscription"
@@ -155,7 +124,7 @@
                             "
                         />
                     </div>
-                    <div class="col-span-3 sm:col-span-1">
+                    <div>
                         <BaseSwitch
                             vertical
                             v-model="form.enableAnnualSubscription"
@@ -165,7 +134,7 @@
                             "
                         />
                     </div>
-                    <div class="col-span-3 sm:col-span-1">
+                    <div>
                         <BaseSwitch
                             vertical
                             v-model="form.allowUsingGlobalMailService"
@@ -177,28 +146,27 @@
                             "
                         />
                     </div>
-                </div>
+                    <div>
+                        <BaseSwitch
+                            vertical
+                            v-model="form.showInclusionExclusion"
+                            name="showInclusionExclusion"
+                            :label="$trans('plan.props.show_inclusion_exclusion')"
+                        />
+                    </div>
             </div>
         </div>
         <div class="mt-4 grid grid-cols-2 gap-6">
-            <div class="col-span-2">
-                <BaseSwitch
-                    vertical
-                    v-model="form.showInclusionExclusion"
-                    name="showInclusionExclusion"
-                    :label="$trans('plan.props.show_inclusion_exclusion')"
-                />
-            </div>
             <div
-                class="col-span-2 sm:col-span-1"
+                class="col-span-2"
                 v-if="!form.showInclusionExclusion"
             >
-                <BaseTextarea
-                    :rows="6"
+                <BaseEditor
                     v-model="form.description"
                     name="description"
                     :label="$trans('plan.props.description')"
                     v-model:error="formErrors.description"
+                    :edit="route.params.uuid ? true : false"
                 />
             </div>
             <template v-if="form.showInclusionExclusion">
@@ -222,42 +190,6 @@
                 </div>
             </template>
         </div>
-
-        <BaseFieldset class="mt-4" v-if="form.enableTax && !form.isFree">
-            <template #legend>{{ $trans("plan.props.tax") }}</template>
-            <div class="mt-4 grid grid-cols-3 gap-6">
-                <template v-if="form.enableTax">
-                    <div class="col-span-3 sm:col-span-1">
-                        <BaseInput
-                            type="text"
-                            v-model="form.taxLabel"
-                            name="taxLabel"
-                            :label="$trans('plan.props.tax_label')"
-                            v-model:error="formErrors.taxLabel"
-                            autofocus
-                        />
-                    </div>
-                    <div class="col-span-3 sm:col-span-1">
-                        <BaseInput
-                            percentage
-                            v-model="form.taxRate"
-                            name="taxRate"
-                            :label="$trans('plan.props.tax_rate')"
-                            v-model:error="formErrors.taxRate"
-                            autofocus
-                        />
-                    </div>
-                    <div class="col-span-3 sm:col-span-1">
-                        <BaseSwitch
-                            vertical
-                            v-model="form.taxTypeExclusive"
-                            name="taxTypeExclusive"
-                            :label="$trans('plan.props.tax_type_exclusive')"
-                        />
-                    </div>
-                </template>
-            </div>
-        </BaseFieldset>
 
         <BaseFieldset class="mt-4" v-if="form.hasActivationCharge">
             <template #legend
@@ -324,10 +256,12 @@ export default {
 
 <script setup>
 import { reactive, inject, watch } from "vue"
+import { useRoute } from "vue-router"
 import { getConfig, getFormErrors } from "@core/helpers/action"
 import { cloneDeep } from "@core/utils"
 
 const $trans = inject("$trans")
+const route = useRoute()
 
 /** Plans are differentiated by student capacity; other limits stay hidden. */
 const PLAN_CREATE_HIDDEN_LIMIT_DEFAULT = 100000
@@ -335,6 +269,7 @@ const PLAN_CREATE_HIDDEN_LIMIT_DEFAULT = 100000
 const initForm = {
     name: "",
     code: "",
+    minStudentLimit: "",
     maxTeamLimit: "",
     teamWiseLimit: false,
     maxStudentLimit: "",
@@ -346,10 +281,6 @@ const initForm = {
     price: [],
     enableMonthlySubscription: true,
     enableAnnualSubscription: true,
-    enableTax: false,
-    taxLabel: "",
-    taxTypeExclusive: false,
-    taxRate: 0,
     activationCharge: [],
     isActive: false,
     isDefault: false,
@@ -439,7 +370,7 @@ const setPreRequisites = (data) => {
 const setForm = (data) => {
     Object.assign(initForm, {
         ...data,
-        taxRate: data.taxRate?.value || "",
+        minStudentLimit: data.minStudentLimit ?? "",
     })
     Object.assign(form, cloneDeep(initForm))
     applyStudentTierDefaults()

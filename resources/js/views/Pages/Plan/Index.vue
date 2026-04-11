@@ -68,8 +68,23 @@
                     <DataCell name="code">
                         {{ plan.code }}
                     </DataCell>
+                    <DataCell name="minStudentLimit">
+                        {{ plan.minStudentLimit ?? "-" }}
+                    </DataCell>
                     <DataCell name="maxStudentLimit">
-                        {{ plan.maxStudentLimit || plan.maxStudentPerTeamLimit || "-" }}
+                        {{ plan.maxStudentLimit ?? "-" }}
+                    </DataCell>
+                    <DataCell name="priceSummary">
+                        <div class="space-y-1 text-xs">
+                            <div class="flex items-center justify-between gap-3">
+                                <span class="text-gray-500">Monthly</span>
+                                <span>{{ getPriceByFrequency(plan, "monthly") }}</span>
+                            </div>
+                            <div class="flex items-center justify-between gap-3">
+                                <span class="text-gray-500">Annually</span>
+                                <span>{{ getPriceByFrequency(plan, "annually") }}</span>
+                            </div>
+                        </div>
                     </DataCell>
                     <DataCell name="isActive">
                         <i
@@ -80,36 +95,6 @@
                             class="far fa-lg fa-circle-xmark text-danger"
                             v-else
                         ></i>
-                    </DataCell>
-                    <DataCell name="isFree">
-                        <i
-                            class="far fa-lg fa-circle-check text-success"
-                            v-if="plan.isFree"
-                        ></i>
-                        <i
-                            class="far fa-lg fa-circle-xmark text-danger"
-                            v-else
-                        ></i>
-                    </DataCell>
-                    <DataCell name="isVisible">
-                        <i
-                            class="far fa-lg fa-circle-check text-success"
-                            v-if="plan.isVisible"
-                        ></i>
-                        <i
-                            class="far fa-lg fa-circle-xmark text-danger"
-                            v-else
-                        ></i>
-                    </DataCell>
-                    <DataCell name="priceSummary">
-                        <div class="space-y-1">
-                            <div
-                                v-for="price in visiblePrices(plan)"
-                                :key="`${price.frequency.value}-${price.currency.name}`"
-                            >
-                                {{ price.amount.formatted }} {{ price.frequency.label }}
-                            </div>
-                        </div>
                     </DataCell>
                     <DataCell name="createdAt">
                         {{ plan.createdAt.formatted }}
@@ -233,12 +218,19 @@ const setItems = (data) => {
     Object.assign(plans, data)
 }
 
-const visiblePrices = (plan) =>
-    (plan.price || []).filter(
-        (price) =>
-            (plan.enableMonthlySubscription &&
-                price.frequency.value === "monthly") ||
-            (plan.enableAnnualSubscription &&
-                price.frequency.value === "annually")
+const getPriceByFrequency = (plan, frequency) => {
+    const isEnabled =
+        (frequency === "monthly" && plan.enableMonthlySubscription) ||
+        (frequency === "annually" && plan.enableAnnualSubscription)
+
+    if (!isEnabled) {
+        return "-"
+    }
+
+    const matchedPrice = (plan.price || []).find(
+        (price) => price.frequency.value === frequency
     )
+
+    return matchedPrice?.amount?.formatted || "-"
+}
 </script>
