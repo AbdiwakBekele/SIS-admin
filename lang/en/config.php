@@ -94,7 +94,7 @@ return [
             'module_description' => 'A pre-defined mail layout, that may already include content which you can use to send emails.',
             'available_variables' => 'Available Variables',
             'props' => [
-                'name' => 'Name',
+                'name' => 'Title',
                 'subject' => 'Subject',
                 'content' => 'Content',
             ],
@@ -131,7 +131,7 @@ return [
             'module_description' => 'A pre-defined SMS, that may already include content which you can use to send SMS.',
             'available_variables' => 'Available Variables',
             'props' => [
-                'name' => 'Name',
+                'name' => 'Title',
                 'content' => 'Content',
                 'subject' => 'Subject',
                 'template_id' => 'Template ID',
@@ -148,7 +148,7 @@ return [
             'module_description' => 'A pre-defined mail layout, that may already include content which you can use to send emails.',
             'available_variables' => 'Available Variables',
             'props' => [
-                'name' => 'Name',
+                'name' => 'Title',
                 'subject' => 'Title',
                 'content' => 'Content',
             ],

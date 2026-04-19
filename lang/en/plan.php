@@ -7,8 +7,7 @@ return [
     'module_description' => 'Plans are different set of Pricing & Features, you wish to offer to your clients.',
     'modules' => [],
     'props' => [
-        'name' => 'Name',
-        'title' => 'Title',
+        'name' => 'Title',
         'code' => 'Code',
         'active' => 'Active',
         'free' => 'Free',

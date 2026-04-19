@@ -22,7 +22,7 @@ class PlanListService extends ListGenerator
         $headers = [
             [
                 'key' => 'name',
-                'label' => trans('plan.props.title'),
+                'label' => trans('plan.props.name'),
                 'sortable' => true,
                 'visibility' => true,
             ],

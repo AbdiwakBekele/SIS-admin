@@ -4,7 +4,7 @@ return [
     'option' => 'Option',
     'props' => [
         'type' => 'Type',
-        'name' => 'Name',
+        'name' => 'Title',
         'color' => 'Color',
         'description' => 'Description',
     ],

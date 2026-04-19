@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\AcademicTermType;
 use App\Enums\PlanFrequency;
 use App\Enums\TenantStatus;
 use App\Helpers\ListHelper;
@@ -9,7 +10,9 @@ use App\Http\Resources\PlanResource;
 use App\Models\Plan;
 use App\Models\Subscription;
 use App\Models\Tenant;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -23,7 +26,9 @@ class TenantService
         $plans = PlanResource::collection(Plan::query()
             ->get());
 
-        return compact('currencies', 'frequencies', 'plans');
+        $academicTerms = AcademicTermType::getOptions();
+
+        return compact('currencies', 'frequencies', 'plans', 'academicTerms');
     }
 
     public function create(Request $request): Tenant
@@ -63,8 +68,27 @@ class TenantService
 
             $meta['currency'] = $request->currency;
             $meta['frequency'] = $request->frequency;
-            $meta['trial_period'] = $request->is_trial ? (int) $request->trial_period : 0;
-            $meta['trial_ends_at'] = $request->is_trial ? today()->addDays((int) $request->trial_period)->toDateString() : null;
+
+            if ($request->boolean('is_trial') && $request->filled('trial_start_date') && $request->filled('trial_end_date')) {
+                $start = Carbon::parse($request->trial_start_date)->startOfDay();
+                $end = Carbon::parse($request->trial_end_date)->startOfDay();
+                $meta['trial_starts_at'] = $start->toDateString();
+                $meta['trial_ends_at'] = $end->toDateString();
+                $meta['trial_period'] = (int) $start->diffInDays($end) + 1;
+            } else {
+                $meta['trial_starts_at'] = null;
+                $meta['trial_ends_at'] = null;
+                $meta['trial_period'] = 0;
+            }
+        }
+
+        $meta['school_name'] = $request->input('school_name');
+        $meta['academic_term'] = $request->input('academic_term');
+
+        if ($request->filled('school_logo') && str_starts_with($request->school_logo, 'data:image/')) {
+            $meta['school_logo'] = $this->storeSchoolLogoFromDataUrl($request->school_logo);
+        } elseif ($tenant) {
+            $meta['school_logo'] = $tenant->getMeta('school_logo');
         }
 
         if (! $tenant) {
@@ -76,6 +100,34 @@ class TenantService
         $formatted['meta'] = $meta;
 
         return $formatted;
+    }
+
+    private function storeSchoolLogoFromDataUrl(string $dataUrl): string
+    {
+        if (! preg_match('#^data:image/(jpeg|jpg|png|gif|webp);base64,#i', $dataUrl, $m)) {
+            throw ValidationException::withMessages([
+                'school_logo' => [trans('tenant.errors.invalid_school_logo')],
+            ]);
+        }
+
+        $binary = base64_decode(substr($dataUrl, strpos($dataUrl, ',') + 1), true);
+        if ($binary === false || strlen($binary) > 2 * 1024 * 1024) {
+            throw ValidationException::withMessages([
+                'school_logo' => [trans('tenant.errors.invalid_school_logo')],
+            ]);
+        }
+
+        if (@getimagesizefromstring($binary) === false) {
+            throw ValidationException::withMessages([
+                'school_logo' => [trans('tenant.errors.invalid_school_logo')],
+            ]);
+        }
+
+        $ext = strtolower($m[1]) === 'jpeg' || strtolower($m[1]) === 'jpg' ? 'jpg' : strtolower($m[1]);
+        $path = 'school-logos/'.Str::uuid()->toString().'.'.$ext;
+        Storage::disk('public')->put($path, $binary);
+
+        return Storage::url($path);
     }
 
     public function update(Request $request, Tenant $tenant): void

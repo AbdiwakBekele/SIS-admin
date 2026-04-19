@@ -1,22 +1,36 @@
 <?php
 
 return [
+    'errors' => [
+        'invalid_school_logo' => 'Please upload a valid image (JPEG, PNG, GIF, or WebP) under 2 MB.',
+    ],
     'tenant' => 'Tenant',
     'tenants' => 'Tenants',
     'module_title' => 'Manage all Tenants',
     'module_description' => 'Tenants are the clients signed up for your service.',
     'could_not_perform_if_status_not_pending' => 'Could not perform this operation as tenant status is not pending.',
     'could_not_modify_pending_tenant' => 'Could not modify tenant if not activated.',
+    'academic_terms' => [
+        'semester' => 'Semester',
+        'trimester' => 'Trimester',
+        'quarter' => 'Quarter',
+        'year_long' => 'Year Long',
+    ],
     'props' => [
+        'academic_term' => 'Academic Term',
         'domain' => 'Domain',
         'custom_domain' => 'Custom Domain',
-        'name' => 'Name',
+        'name' => 'Title',
+        'school_name' => 'School Name',
+        'school_logo' => 'School Logo',
         'email' => 'Email',
         'contact_number' => 'Contact Number',
         'activation_token' => 'Activation Token',
         'status' => 'Status',
         'expiry_date' => 'Expiry Date',
         'trial' => 'Trial',
+        'trial_start_date' => 'Trial Start Date',
+        'trial_end_date' => 'Trial End Date',
     ],
     'config' => [
         'props' => [

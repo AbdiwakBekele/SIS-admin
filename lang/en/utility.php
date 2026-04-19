@@ -38,7 +38,7 @@ return [
             'info_empty' => 'This list is empty. Drag & drop some todos here.',
             'could_not_perform_if_empty_list' => 'Could not move to uncategorized list.',
             'props' => [
-                'name' => 'Name',
+                'name' => 'Title',
                 'description' => 'Description',
             ],
         ],

@@ -22,6 +22,41 @@
             <div class="col-span-3 sm:col-span-1">
                 <BaseInput
                     type="text"
+                    v-model="form.schoolName"
+                    name="schoolName"
+                    :label="$trans('tenant.props.school_name')"
+                    v-model:error="formErrors.schoolName"
+                />
+            </div>
+            <div class="col-span-3 sm:col-span-1">
+                <div class="flex flex-col gap-1">
+                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {{ $trans("tenant.props.school_logo") }}
+                    </span>
+                    <input
+                        type="file"
+                        name="schoolLogo"
+                        accept="image/jpeg,image/png,image/gif,image/webp"
+                        class="block w-full text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-medium file:text-white"
+                        @change="onSchoolLogoChange"
+                    />
+                    <p
+                        v-if="formErrors.schoolLogo"
+                        class="text-sm text-red-600 dark:text-red-400"
+                    >
+                        {{ formErrors.schoolLogo }}
+                    </p>
+                    <img
+                        v-if="schoolLogoDisplay"
+                        :src="schoolLogoDisplay"
+                        alt=""
+                        class="mt-2 h-20 w-auto max-w-full rounded border border-gray-200 object-contain dark:border-gray-600"
+                    />
+                </div>
+            </div>
+            <div class="col-span-3 sm:col-span-1">
+                <BaseInput
+                    type="text"
                     v-model="form.email"
                     name="email"
                     :label="$trans('tenant.props.email')"
@@ -47,6 +82,22 @@
                 v-model:country="form.address.country"
                 v-model:formErrors="formErrors"
             />
+
+            <div class="col-span-3 sm:col-span-1">
+                <BaseSelect
+                    name="academicTerm"
+                    :label="
+                        $trans('global.select', {
+                            attribute: $trans('tenant.props.academic_term'),
+                        })
+                    "
+                    :options="preRequisites.academicTerms"
+                    label-prop="label"
+                    value-prop="value"
+                    v-model="form.academicTerm"
+                    v-model:error="formErrors.academicTerm"
+                />
+            </div>
 
             <template
                 v-if="
@@ -153,11 +204,20 @@
                 </div>
                 <div class="col-span-3 sm:col-span-1" v-if="form.isTrial">
                     <BaseInput
-                        type="number"
-                        v-model="form.trialPeriod"
-                        name="trialPeriod"
-                        :label="$trans('tenant.config.props.trial_period')"
-                        v-model:error="formErrors.trialPeriod"
+                        type="date"
+                        v-model="form.trialStartDate"
+                        name="trialStartDate"
+                        :label="$trans('tenant.props.trial_start_date')"
+                        v-model:error="formErrors.trialStartDate"
+                    />
+                </div>
+                <div class="col-span-3 sm:col-span-1" v-if="form.isTrial">
+                    <BaseInput
+                        type="date"
+                        v-model="form.trialEndDate"
+                        name="trialEndDate"
+                        :label="$trans('tenant.props.trial_end_date')"
+                        v-model:error="formErrors.trialEndDate"
                     />
                 </div>
             </template>
@@ -186,12 +246,17 @@ const initForm = {
     domain: "",
     customDomain: "",
     isTrial: false,
-    trialPeriod: "",
+    trialStartDate: "",
+    trialEndDate: "",
     plan: "",
     name: "",
+    schoolName: "",
+    schoolLogo: "",
+    schoolLogoUrl: "",
     email: "",
     address: {},
     contactNumber: "",
+    academicTerm: "",
     frequency: "",
     currency: "",
 }
@@ -201,6 +266,7 @@ const preRequisites = reactive({
     currencies: [],
     frequencies: [],
     plans: [],
+    academicTerms: [],
 })
 const formErrors = getFormErrors(initUrl)
 const getTld = computed(() => getConfig("system.tld").value)
@@ -211,8 +277,24 @@ const fetchData = reactive({
     isLoaded: route.params.uuid ? false : true,
 })
 
+const schoolLogoDisplay = computed(
+    () => form.schoolLogo || form.schoolLogoUrl || ""
+)
+
 const setPreRequisites = (data) => {
     Object.assign(preRequisites, data)
+}
+
+const onSchoolLogoChange = (event) => {
+    const file = event.target.files?.[0]
+    if (!file) {
+        return
+    }
+    const reader = new FileReader()
+    reader.onload = () => {
+        form.schoolLogo = reader.result
+    }
+    reader.readAsDataURL(file)
 }
 
 const setForm = (data) => {
@@ -222,6 +304,12 @@ const setForm = (data) => {
         plan: data.plan?.uuid,
         frequency: data.frequency?.value,
         currency: data.currency?.name,
+        schoolName: data.schoolName || "",
+        schoolLogo: "",
+        schoolLogoUrl: data.schoolLogo || "",
+        trialStartDate: data.trialStartDate || "",
+        trialEndDate: data.trialEndDate || "",
+        academicTerm: data.academicTerm?.value ?? data.academicTerm ?? "",
     })
     Object.assign(form, cloneDeep(initForm))
 

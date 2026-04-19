@@ -2,8 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\AcademicTermType;
 use App\Enums\PlanFrequency;
 use App\Enums\TenantStatus;
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
 
@@ -25,9 +27,20 @@ class TenantResource extends JsonResource
 
         $domainName = Arr::get(parse_url(config('app.url')), 'host');
 
+        $trialStartsAt = $this->getMeta('trial_starts_at');
+        if (! $trialStartsAt && $this->is_trial && $this->getMeta('trial_ends_at') && (int) $this->getMeta('trial_period') > 0) {
+            $trialStartsAt = Carbon::parse($this->getMeta('trial_ends_at'))->subDays((int) $this->getMeta('trial_period'))->toDateString();
+        }
+
+        $schoolLogo = $this->getMeta('school_logo');
+        $schoolLogoUrl = $schoolLogo ? (str_starts_with((string) $schoolLogo, 'http') ? $schoolLogo : url($schoolLogo)) : null;
+
         return [
             'uuid' => $this->uuid,
             'name' => $this->name,
+            'school_name' => $this->getMeta('school_name'),
+            'school_logo' => $schoolLogoUrl,
+            'academic_term' => AcademicTermType::getDetail($this->getMeta('academic_term')),
             'email' => $this->email,
             'address' => $this->address,
             'address_display' => Arr::implode(Arr::notEmpty($this->address ?? [])),
@@ -47,6 +60,8 @@ class TenantResource extends JsonResource
             'frequency' => PlanFrequency::getDetail($this->getMeta('frequency')),
             'currency' => \Currency::from($this->getMeta('currency')),
             'trial_period' => (int) $this->getMeta('trial_period'),
+            'trial_start_date' => $trialStartsAt,
+            'trial_end_date' => $this->getMeta('trial_ends_at'),
             'created_at' => \Cal::dateTime($this->created_at),
             'updated_at' => \Cal::dateTime($this->updated_at),
         ];

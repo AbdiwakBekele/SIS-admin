@@ -14,7 +14,7 @@
                     type="text"
                     v-model="form.name"
                     name="name"
-                    :label="$trans('plan.props.title')"
+                    :label="$trans('plan.props.name')"
                     v-model:error="formErrors.name"
                     autofocus
                 />

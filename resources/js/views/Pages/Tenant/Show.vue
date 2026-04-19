@@ -60,6 +60,31 @@
                                 {{ tenant.name }}
                             </ListItemView>
 
+                            <ListItemView
+                                v-if="tenant.schoolName"
+                                :label="$trans('tenant.props.school_name')"
+                            >
+                                {{ tenant.schoolName }}
+                            </ListItemView>
+
+                            <ListItemView
+                                v-if="tenant.schoolLogo"
+                                :label="$trans('tenant.props.school_logo')"
+                            >
+                                <img
+                                    :src="tenant.schoolLogo"
+                                    alt=""
+                                    class="mt-1 h-16 w-auto max-w-xs rounded border border-gray-200 object-contain dark:border-gray-600"
+                                />
+                            </ListItemView>
+
+                            <ListItemView
+                                v-if="tenant.academicTerm?.label"
+                                :label="$trans('tenant.props.academic_term')"
+                            >
+                                {{ tenant.academicTerm.label }}
+                            </ListItemView>
+
                             <ListItemView :label="$trans('tenant.props.email')">
                                 {{ tenant.email }}
                             </ListItemView>
@@ -103,13 +128,19 @@
                             </ListItemView>
 
                             <ListItemView
-                                :label="
-                                    $trans('tenant.config.props.trial_period')
-                                "
+                                :label="$trans('tenant.props.trial')"
                                 v-if="tenant.isTrial"
                             >
-                                {{ tenant.trialPeriod }}
-                                {{ $trans("list.durations.days") }}
+                                <template
+                                    v-if="tenant.trialStartDate && tenant.trialEndDate"
+                                >
+                                    {{ tenant.trialStartDate }} —
+                                    {{ tenant.trialEndDate }}
+                                </template>
+                                <template v-else>
+                                    {{ tenant.trialPeriod }}
+                                    {{ $trans("list.durations.days") }}
+                                </template>
                             </ListItemView>
 
                             <ListItemView

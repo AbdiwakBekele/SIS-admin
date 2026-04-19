@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Concerns\SimpleValidation;
+use App\Enums\AcademicTermType;
 use App\Enums\PlanFrequency;
 use App\Models\Plan;
 use Illuminate\Foundation\Http\FormRequest;
@@ -49,10 +50,14 @@ class TenantRequest extends FormRequest
             'is_trial' => 'boolean',
             'frequency' => ['required', new Enum(PlanFrequency::class)],
             'currency' => 'required',
+            'school_name' => 'required|min:2|max:150',
+            'school_logo' => 'nullable|string|max:3500000',
+            'academic_term' => ['required', Rule::enum(AcademicTermType::class)],
         ];
 
-        if ($this->is_trial) {
-            $rules['trial_period'] = 'required|integer|min:1|max:100';
+        if ($this->boolean('is_trial')) {
+            $rules['trial_start_date'] = 'required|date';
+            $rules['trial_end_date'] = 'required|date|after_or_equal:trial_start_date';
         }
 
         return $rules;
@@ -84,9 +89,27 @@ class TenantRequest extends FormRequest
                 $validator->errors()->add('currency', trans('general.errors.invalid_input'));
             }
 
-            $isTrial = $this->is_trial;
+            $isTrial = $this->boolean('is_trial');
             if ($plan->getFeature('is_free')) {
-                $isTrial = 0;
+                $isTrial = false;
+            }
+
+            if ($this->filled('school_logo') && ! str_starts_with($this->school_logo, 'data:image/')) {
+                $validator->errors()->add('school_logo', trans('tenant.errors.invalid_school_logo'));
+            }
+
+            if ($this->filled('school_logo') && str_starts_with($this->school_logo, 'data:image/')) {
+                $comma = strpos($this->school_logo, ',');
+                if ($comma === false) {
+                    $validator->errors()->add('school_logo', trans('tenant.errors.invalid_school_logo'));
+                } else {
+                    $decoded = base64_decode(substr($this->school_logo, $comma + 1), true);
+                    if ($decoded === false || strlen($decoded) > 2 * 1024 * 1024) {
+                        $validator->errors()->add('school_logo', trans('tenant.errors.invalid_school_logo'));
+                    } elseif (@getimagesizefromstring($decoded) === false) {
+                        $validator->errors()->add('school_logo', trans('tenant.errors.invalid_school_logo'));
+                    }
+                }
             }
 
             $this->merge([
@@ -112,7 +135,11 @@ class TenantRequest extends FormRequest
             'custom_domain' => __('tenant.props.custom_domain'),
             'plan' => __('plan.plan'),
             'is_trial' => __('global.is_attribute', ['attribute' => __('tenant.props.trial')]),
-            'trial_period' => __('tenant.config.props.trial_period'),
+            'trial_start_date' => __('tenant.props.trial_start_date'),
+            'trial_end_date' => __('tenant.props.trial_end_date'),
+            'school_name' => __('tenant.props.school_name'),
+            'school_logo' => __('tenant.props.school_logo'),
+            'academic_term' => __('tenant.props.academic_term'),
             'frequency' => __('plan.props.frequency'),
             'currency' => __('config.system.props.currency'),
             'address.address_line1' => __('contact.props.address.address_line1'),
